@@ -7,10 +7,15 @@ import re
 import time
 import shutil
 import matplotlib.pyplot as plt
+# import third party modules
 if sys.version_info.major < 3:
     import Tkinter as tk
 else:
     import tkinter as tk
+from PyQt4 import QtGui, QtCore
+import py_gui.main_window as mw
+import py_gui.resolution_analyse as ra
+
 # import local modules
 import gui
 from cli import get_args
@@ -51,18 +56,52 @@ img_type = {
     515: bw_linear
 }
 
+class ResAnalyseWindow(QtGui.QDialog):
+    def __init__(self, parent=None):
+        super(ResAnalyseWindow, self).__init__(parent)
+        self.ui = ra.Ui_Dialog()
+        self.ui.setupUi(self)
+
+
+class MainWindow(QtGui.QMainWindow):
+
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        self.ui = mw.Ui_MainWindow()
+        self.ui.setupUi(self)
+        # set connections for the buttons
+        self.set_connections() 
+
+    def set_connections(self):
+        self.ui.res_btn.clicked.connect(self.res_btn_clicked)
+
+    def res_btn_clicked(self):
+        res_analyse_window = ResAnalyseWindow()
+        # make the background window freeze
+        res_analyse_window.setModal(True)
+        res_analyse_window.show()
+
+        res_analyse_window.exec_()
+
+
+
 
 if __name__ == "__main__":
-    use_gui = True
-    if use_gui:
+    use_tkinter_gui, use_pyqt_gui = False, True
+    if use_tkinter_gui:
         root = tk.Tk()
         file_dialog = gui.TkFileDialog(root)
         file_dialog.pack()
         #the_lable = Label(root, text = "vdo_check")
         # the_lable.pack()
         root.mainloop()
-
         sys.exit()
+    elif use_pyqt_gui:
+        app = QtGui.QApplication(sys.argv)
+        myapp = MainWindow()
+        myapp.show()
+        sys.exit(app.exec_())
+
     else:
         options = get_args()
         # TODO: set in options/cli or some parameter file!!
