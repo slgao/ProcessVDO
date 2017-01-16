@@ -15,6 +15,12 @@ else:
 from PyQt4 import QtGui, QtCore
 import py_gui.main_window as mw
 import py_gui.resolution_analyse as ra
+import py_gui.from_vdo as frvdo
+import py_gui.from_hdf5 as frhd5
+import py_gui.output_hdf5 as outh5
+import py_gui.export_pano_img as expimg
+import py_gui.export_pano_gps as expgps
+import py_gui.about_dialog as aboutd 
 
 # import local modules
 import gui
@@ -56,12 +62,79 @@ img_type = {
     515: bw_linear
 }
 
+
 class ResAnalyseWindow(QtGui.QDialog):
+
     def __init__(self, parent=None):
         super(ResAnalyseWindow, self).__init__(parent)
         self.ui = ra.Ui_Dialog()
         self.ui.setupUi(self)
+        self.set_connections()
 
+    def set_connections(self):
+        self.ui.from_vdo_btn.clicked.connect(self.from_vdo_btn_clicked)
+        self.ui.from_hdf5_btn.clicked.connect(self.from_hdf5_btn_clicked)
+
+    def from_vdo_btn_clicked(self):
+        from_vdo_window = FromVDOWindow()
+        # make the background window freeze
+        from_vdo_window.setModal(True)
+        from_vdo_window.show()
+        from_vdo_window.exec_()
+
+    def from_hdf5_btn_clicked(self):
+        from_hdf5_window = FromHdf5Window()
+        # make the background window freeze
+        from_hdf5_window.setModal(True)
+        from_hdf5_window.show()
+        from_hdf5_window.exec_()
+
+
+class OutHdf5Window(QtGui.QDialog):
+
+    def __init__(self, parent=None):
+        super(OutHdf5Window, self).__init__(parent)
+        self.ui = outh5.Ui_Dialog()
+        self.ui.setupUi(self)
+
+
+class ExpPanoImgWindow(QtGui.QDialog):
+
+    def __init__(self, parent=None):
+        super(ExpPanoImgWindow, self).__init__(parent)
+        self.ui = expimg.Ui_Dialog()
+        self.ui.setupUi(self)
+
+
+class ExpPanoGPSWindow(QtGui.QDialog):
+
+    def __init__(self, parent=None):
+        super(ExpPanoGPSWindow, self).__init__(parent)
+        self.ui = expgps.Ui_Dialog()
+        self.ui.setupUi(self)
+
+
+class FromHdf5Window(QtGui.QDialog):
+
+    def __init__(self, parent=None):
+        super(FromHdf5Window, self).__init__(parent)
+        self.ui = frhd5.Ui_Dialog()
+        self.ui.setupUi(self)
+
+
+class FromVDOWindow(QtGui.QDialog):
+
+    def __init__(self, parent=None):
+        super(FromVDOWindow, self).__init__(parent)
+        self.ui = frvdo.Ui_Dialog()
+        self.ui.setupUi(self)
+
+class AboutDialog(QtGui.QDialog):
+    
+    def __init__(self, parent=None):
+        super(AboutDialog, self).__init__(parent)
+        self.ui = aboutd.Ui_Dialog()
+        self.ui.setupUi(self)
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -70,21 +143,47 @@ class MainWindow(QtGui.QMainWindow):
         self.ui = mw.Ui_MainWindow()
         self.ui.setupUi(self)
         # set connections for the buttons
-        self.set_connections() 
+        self.set_connections()
 
     def set_connections(self):
         self.ui.res_btn.clicked.connect(self.res_btn_clicked)
+        self.ui.hdf5_btn.clicked.connect(self.hdf5_btn_clicked)
+        self.ui.pano_img_btn.clicked.connect(self.pano_img_btn_clicked)
+        self.ui.pano_gps_btn.clicked.connect(self.pano_gps_btn_clicked)
+        self.ui.actionAbout.triggered.connect(self.actionAbout_triggered)
 
     def res_btn_clicked(self):
         res_analyse_window = ResAnalyseWindow()
         # make the background window freeze
         res_analyse_window.setModal(True)
         res_analyse_window.show()
-
         res_analyse_window.exec_()
 
+    def hdf5_btn_clicked(self):
+        out_hdf5_window = OutHdf5Window()
+        # make the background window freeze
+        out_hdf5_window.setModal(True)
+        out_hdf5_window.show()
+        out_hdf5_window.exec_()
 
+    def pano_img_btn_clicked(self):
+        exp_pano_img_window = ExpPanoGPSWindow()
+        # make the background window freeze
+        exp_pano_img_window.setModal(True)
+        exp_pano_img_window.show()
+        exp_pano_img_window.exec_()
 
+    def pano_gps_btn_clicked(self):
+        exp_pano_gps_window = ExpPanoGPSWindow()
+        # make the background window freeze
+        exp_pano_gps_window.setModal(True)
+        exp_pano_gps_window.show()
+        exp_pano_gps_window.exec_()
+
+    def actionAbout_triggered(self):
+        about_window = AboutDialog()
+        about_window.show()
+        about_window.exec_()
 
 if __name__ == "__main__":
     use_tkinter_gui, use_pyqt_gui = False, True
