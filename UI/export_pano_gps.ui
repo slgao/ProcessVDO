@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="vdo_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -38,7 +38,7 @@
       </widget>
      </item>
      <item row="1" column="3">
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="img_save_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -52,10 +52,10 @@
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="img_save_path"/>
      </item>
      <item row="0" column="2">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="vdo_path"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
@@ -65,20 +65,20 @@
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="poi_path"/>
      </item>
      <item row="3" column="2">
-      <widget class="QLineEdit" name="lineEdit_4"/>
+      <widget class="QLineEdit" name="gps_path"/>
      </item>
      <item row="2" column="3">
-      <widget class="QPushButton" name="pushButton_6">
+      <widget class="QPushButton" name="poi_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
       </widget>
      </item>
      <item row="3" column="3">
-      <widget class="QPushButton" name="pushButton_7">
+      <widget class="QPushButton" name="gps_save_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -105,7 +105,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="out_gps_btn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -118,7 +118,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="cancel_btn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -168,21 +168,21 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="1" column="2">
-        <widget class="QCheckBox" name="checkBox_3">
+        <widget class="QCheckBox" name="checkBox_c51">
          <property name="text">
           <string>c51</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QCheckBox" name="checkBox_2">
+        <widget class="QCheckBox" name="checkBox_c50">
          <property name="text">
           <string>c50</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="checkBox_pano_cam">
          <property name="text">
           <string>pano_cam</string>
          </property>
@@ -201,14 +201,14 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="1" column="0">
-        <widget class="QCheckBox" name="checkBox_6">
+        <widget class="QCheckBox" name="checkBox_img_export">
          <property name="text">
           <string>img_export</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QCheckBox" name="checkBox_5">
+        <widget class="QCheckBox" name="checkBox_multifolder">
          <property name="text">
           <string>multi_folder(run_day)</string>
          </property>
@@ -223,34 +223,50 @@
  <resources/>
  <connections>
   <connection>
-   <sender>checkBox</sender>
+   <sender>checkBox_pano_cam</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_2</receiver>
+   <receiver>checkBox_c50</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>43</x>
-     <y>154</y>
+     <x>53</x>
+     <y>204</y>
     </hint>
     <hint type="destinationlabel">
-     <x>137</x>
-     <y>160</y>
+     <x>210</x>
+     <y>204</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>checkBox_pano_cam</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_3</receiver>
+   <receiver>checkBox_c51</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33</x>
-     <y>152</y>
+     <x>43</x>
+     <y>204</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>157</y>
+     <x>308</x>
+     <y>204</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>777</x>
+     <y>295</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>800</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>

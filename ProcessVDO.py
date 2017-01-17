@@ -20,7 +20,7 @@ import py_gui.from_hdf5 as frhd5
 import py_gui.output_hdf5 as outh5
 import py_gui.export_pano_img as expimg
 import py_gui.export_pano_gps as expgps
-import py_gui.about_dialog as aboutd 
+import py_gui.about_dialog as aboutd
 
 # import local modules
 import gui
@@ -29,7 +29,7 @@ import vdo
 import vdo.VideoRead.VideoRead as VR
 #import pstats
 ###################
-
+import ipdb
 
 class CamInfo:
 
@@ -63,6 +63,22 @@ img_type = {
 }
 
 
+class DialogWindow(QtGui.QDialog):
+    # set common features used by QDialog
+
+    def __init__(self, parent=None):
+        super(DialogWindow, self).__init__(parent)
+
+    def set_path(self, lineEdit_path):
+        file_name = str(QtGui.QFileDialog.getExistingDirectory(
+            self, "Select Directory"))
+        if file_name is not '':
+            lineEdit_path.setText(file_name)
+
+    def show_warning(self, message):
+        QtGui.QMessageBox.critical(self, "Warning", message, QtGui.QMessageBox.Ok)
+
+
 class ResAnalyseWindow(QtGui.QDialog):
 
     def __init__(self, parent=None):
@@ -90,51 +106,175 @@ class ResAnalyseWindow(QtGui.QDialog):
         from_hdf5_window.exec_()
 
 
-class OutHdf5Window(QtGui.QDialog):
+class OutHdf5Window(DialogWindow):
 
     def __init__(self, parent=None):
         super(OutHdf5Window, self).__init__(parent)
         self.ui = outh5.Ui_Dialog()
         self.ui.setupUi(self)
+        self.set_connections()
+
+    def set_connections(self):
+        # vdo path and save path need to be set
+        self.ui.vdo_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.vdo_path))
+        self.ui.save_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.save_path))
+        # TODO: add more button set_connections
 
 
-class ExpPanoImgWindow(QtGui.QDialog):
+class ExpPanoImgWindow(DialogWindow):
 
     def __init__(self, parent=None):
         super(ExpPanoImgWindow, self).__init__(parent)
         self.ui = expimg.Ui_Dialog()
         self.ui.setupUi(self)
+        self.set_connections()
+
+    def set_connections(self):
+        self.ui.vdo_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.vdo_path))
+        self.ui.img_save_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.img_save_path))
+        # TODO: add more button set_connections
 
 
-class ExpPanoGPSWindow(QtGui.QDialog):
+class ExpPanoGPSWindow(DialogWindow):
 
     def __init__(self, parent=None):
         super(ExpPanoGPSWindow, self).__init__(parent)
         self.ui = expgps.Ui_Dialog()
         self.ui.setupUi(self)
+        self.set_connections()
+
+    def set_connections(self):
+        self.ui.vdo_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.vdo_path))
+        self.ui.img_save_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.img_save_path))
+        self.ui.poi_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.poi_path))
+        self.ui.gps_save_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.gps_path))
+        # TODO: add more button set_connections
 
 
-class FromHdf5Window(QtGui.QDialog):
+class FromHdf5Window(DialogWindow):
 
     def __init__(self, parent=None):
         super(FromHdf5Window, self).__init__(parent)
         self.ui = frhd5.Ui_Dialog()
         self.ui.setupUi(self)
+        self.set_connections()
+
+    def set_connections(self):
+        self.ui.h5_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.h5_path))
+        self.ui.lockbox_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.lockbox_path))
+        # TODO: add more button set_connections
+        self.ui.out_graph_btn.clicked.connect(self.out_graph_btn_clicked)
+
+    def out_graph_btn_clicked(self):
+        # get run name from the h5 folder
+        h5_path = self.ui.h5_path.text()
+        # ipdb.set_trace()
+        # check whether hdf5 path is valid
+        if not os.path.exists(h5_path):
+            self.show_warning("HDF5 path is not valid!")
+            return
+        else:
+            # check whether h5 files exist
+            h5s = glob.glob("{}/*.h5".format(h5_path))
+            if not h5s:
+                self.show_warning("No HDF5 files are found!")
+                return
+            # here below not refactored
+            try:
+                fn_evnt = r'{}/*.evnt.txt'.format(h5_path)
+                fn_evnt = glob.glob(fn_evnt)
+            except ValueError:
+                print("event or s3db file(s) ... are missing!")
+            evnt = re.split('/|\\\\', fn_evnt[0])[-1]
+            run = re.split(r'\.(?!\d)', evnt)[0]
+
+        # check whether the LB data of the processed run exists
+        fn_lbd = "{}/{}.lbd".format(self.LB_dir.get(), run)
+        fn_lbe = "{}/{}.lbe".format(self.LB_dir.get(), run)
+        if not os.path.exists(self.LB_dir.get()):
+            self.status_h5["text"] = "LockBox data path does not exist!"
+            return
+        if not (os.path.exists(fn_lbd) and os.path.exists(fn_lbe)):
+            self.status_h5["text"] = "No LockBox data found in the folder!"
+            return
+        else:
+            self.status_h5["text"] = "LB exists! Processing ..."
+
+        # copy LB data to h5 folder
+        shutil.copy(fn_lbe, h5_path)
+        shutil.copy(fn_lbd, h5_path)
+
+        # resolution analyse
+        self.pb_h5.start()
+        options = Options()  # fake options
+        if options.debug and not options.use_cams:
+            options.use_cams = ['60']
+        # TODO: handle this also in get_args?
+        if options.use_cams is None:
+            # use all
+            if options.debug:
+                options.use_cams = ['60']
+            else:
+                options.use_cams = vdo.check.VdoRun.default_cams
+
+        if options.save is not None and not len(options.save):
+            # empty list -> use_cams
+            options.save = options.use_cams
+
+        # TODO: switch automatic between py2exe app and python script app
+        # Use this only for py2exe application --Shulin
+        elif options.save is None:
+            options.save = options.use_cams
+
+        speed_max = 40
+        select_range = {'subrange_selected': False}
+        # select_range={'subrange_selected' : True, 'offset_dist' : 500,
+        # 'select_dist' : 50*1000} #15092918
+        self.pb_h5.update()
+        vdo.check.analyseVdo(folder=h5_path, run=None, options=options,
+                             speed_max=speed_max, select_range=select_range)
+        self.pb_h5.update()
+        self.pb_h5.stop()
+        self.status_h5["text"] = "Done!"
+        return
 
 
-class FromVDOWindow(QtGui.QDialog):
+class FromVDOWindow(DialogWindow):
 
     def __init__(self, parent=None):
         super(FromVDOWindow, self).__init__(parent)
         self.ui = frvdo.Ui_Dialog()
         self.ui.setupUi(self)
+        self.set_connections()
+
+    def set_connections(self):
+        self.ui.lockbox_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.lockbox_path))
+        self.ui.vdo_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.vdo_path))
+        self.ui.save_browse_btn.clicked.connect(
+            lambda: self.set_path(self.ui.save_path))
+        # TODO: add more button set_connections
+
 
 class AboutDialog(QtGui.QDialog):
-    
+
     def __init__(self, parent=None):
         super(AboutDialog, self).__init__(parent)
         self.ui = aboutd.Ui_Dialog()
         self.ui.setupUi(self)
+    # def connections(self):
+
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -167,7 +307,7 @@ class MainWindow(QtGui.QMainWindow):
         out_hdf5_window.exec_()
 
     def pano_img_btn_clicked(self):
-        exp_pano_img_window = ExpPanoGPSWindow()
+        exp_pano_img_window = ExpPanoImgWindow()
         # make the background window freeze
         exp_pano_img_window.setModal(True)
         exp_pano_img_window.show()
@@ -182,6 +322,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def actionAbout_triggered(self):
         about_window = AboutDialog()
+        # make the background window freeze
+        about_window.setModal(True)
         about_window.show()
         about_window.exec_()
 

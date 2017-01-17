@@ -17,10 +17,10 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lockbox_path"/>
      </item>
      <item row="1" column="2">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="vdo_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="save_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -48,10 +48,10 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="save_path"/>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="lockbox_browse_btn">
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -65,7 +65,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="vdo_path"/>
      </item>
     </layout>
    </item>
@@ -103,21 +103,21 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="1" column="2">
-         <widget class="QCheckBox" name="checkBox_3">
+         <widget class="QCheckBox" name="checkBox_c51">
           <property name="text">
            <string>c51</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBox_2">
+         <widget class="QCheckBox" name="checkBox_c50">
           <property name="text">
            <string>c50</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="checkBox_pano_cam">
           <property name="text">
            <string>pano_cam</string>
           </property>
@@ -141,35 +141,35 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBox_7">
+         <widget class="QCheckBox" name="checkBox_60">
           <property name="text">
            <string>60</string>
           </property>
          </widget>
         </item>
         <item row="1" column="4">
-         <widget class="QCheckBox" name="checkBox_4">
+         <widget class="QCheckBox" name="checkBox_65">
           <property name="text">
            <string>65</string>
           </property>
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QCheckBox" name="checkBox_5">
+         <widget class="QCheckBox" name="checkBox_64">
           <property name="text">
            <string>64</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBox_6">
+         <widget class="QCheckBox" name="checkBox_cam_6">
           <property name="text">
            <string>cam_6</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="QCheckBox" name="checkBox_8">
+         <widget class="QCheckBox" name="checkBox_61">
           <property name="text">
            <string>61</string>
           </property>
@@ -188,35 +188,35 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBox_9">
+         <widget class="QCheckBox" name="checkBox_70">
           <property name="text">
            <string>70</string>
           </property>
          </widget>
         </item>
         <item row="1" column="4">
-         <widget class="QCheckBox" name="checkBox_10">
+         <widget class="QCheckBox" name="checkBox_75">
           <property name="text">
            <string>75</string>
           </property>
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QCheckBox" name="checkBox_11">
+         <widget class="QCheckBox" name="checkBox_74">
           <property name="text">
            <string>74</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBox_12">
+         <widget class="QCheckBox" name="checkBox_cam_7">
           <property name="text">
            <string>cam_7</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="QCheckBox" name="checkBox_13">
+         <widget class="QCheckBox" name="checkBox_71">
           <property name="text">
            <string>71</string>
           </property>
@@ -243,14 +243,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="out_graph_btn">
        <property name="text">
         <string>Output Graph</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="cancel_btn">
        <property name="text">
         <string>Cancel</string>
        </property>
@@ -263,9 +263,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>checkBox</sender>
+   <sender>checkBox_pano_cam</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_2</receiver>
+   <receiver>checkBox_c50</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -279,9 +279,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>checkBox_pano_cam</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_3</receiver>
+   <receiver>checkBox_c51</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -295,9 +295,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_6</sender>
+   <sender>checkBox_cam_6</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_7</receiver>
+   <receiver>checkBox_60</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -311,9 +311,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_6</sender>
+   <sender>checkBox_cam_6</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_8</receiver>
+   <receiver>checkBox_61</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -327,9 +327,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_6</sender>
+   <sender>checkBox_cam_6</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_5</receiver>
+   <receiver>checkBox_64</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -343,9 +343,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_6</sender>
+   <sender>checkBox_cam_6</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_4</receiver>
+   <receiver>checkBox_65</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -353,15 +353,15 @@
      <y>161</y>
     </hint>
     <hint type="destinationlabel">
-     <x>419</x>
-     <y>161</y>
+     <x>410</x>
+     <y>167</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_12</sender>
+   <sender>checkBox_cam_7</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_9</receiver>
+   <receiver>checkBox_70</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -375,9 +375,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_12</sender>
+   <sender>checkBox_cam_7</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_13</receiver>
+   <receiver>checkBox_71</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -391,9 +391,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_12</sender>
+   <sender>checkBox_cam_7</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_11</receiver>
+   <receiver>checkBox_74</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -401,15 +401,15 @@
      <y>197</y>
     </hint>
     <hint type="destinationlabel">
-     <x>332</x>
-     <y>203</y>
+     <x>331</x>
+     <y>207</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_12</sender>
+   <sender>checkBox_cam_7</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkBox_10</receiver>
+   <receiver>checkBox_75</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -417,8 +417,24 @@
      <y>196</y>
     </hint>
     <hint type="destinationlabel">
-     <x>423</x>
-     <y>196</y>
+     <x>410</x>
+     <y>207</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>749</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>

@@ -129,7 +129,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="close_btn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -158,5 +158,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>close_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>384</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>217</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
