@@ -14,7 +14,7 @@ from data_proc.signal import detect_peaks, get_clusters_single1D, get_regions
 from LocBox.LocBox_parse import LB
 from text_converters import DataColumns
 from enum import Enum
-
+import ipdb
 ## run class(es)
 class VdoRun(object):
     ## TODO: derive from generic Run class
