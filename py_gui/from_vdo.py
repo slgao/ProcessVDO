@@ -137,6 +137,9 @@ class Ui_Dialog(object):
         self.out_graph_btn = QtGui.QPushButton(Dialog)
         self.out_graph_btn.setObjectName(_fromUtf8("out_graph_btn"))
         self.horizontalLayout.addWidget(self.out_graph_btn)
+        self.stop_btn = QtGui.QPushButton(Dialog)
+        self.stop_btn.setObjectName(_fromUtf8("stop_btn"))
+        self.horizontalLayout.addWidget(self.stop_btn)
         self.cancel_btn = QtGui.QPushButton(Dialog)
         self.cancel_btn.setObjectName(_fromUtf8("cancel_btn"))
         self.horizontalLayout.addWidget(self.cancel_btn)
@@ -181,5 +184,6 @@ class Ui_Dialog(object):
         self.checkBox_71.setText(_translate("Dialog", "71", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.line_tab), _translate("Dialog", "LINE_CAM", None))
         self.out_graph_btn.setText(_translate("Dialog", "Output Graph", None))
+        self.stop_btn.setText(_translate("Dialog", "Stop", None))
         self.cancel_btn.setText(_translate("Dialog", "Cancel", None))
 
