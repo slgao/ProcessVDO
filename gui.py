@@ -1,12 +1,11 @@
-import os
-import sys
+import os, sys
 import glob
 import re
 import shutil
 
 if sys.version_info.major < 3:
     import tkFileDialog as fd
-    import Tkconstants as tkcst  # change needed when python 3 used
+    import Tkconstants as tkcst# change needed when python 3 used
     import ttk
     import Tkinter as tk
 else:
@@ -23,27 +22,24 @@ import numpy as np
 import vdo
 import vdo.VideoRead.VideoRead as VR
 
-
 class Options(object):
-    attributes = ['debug', 'use_cams',
-                  'AbExtCounter', 'save', 'Jumping', 'FrameInfo'
-                  ]
-
+    attributes = ['debug','use_cams',
+          'AbExtCounter', 'save', 'Jumping', 'FrameInfo'
+          ]
     def __init__(self, **kwargs):
         for attr in self.__class__.attributes:
             setattr(self, attr, kwargs.get(attr))
-
 
 def csv2h5(dir):
     fn_csv = r"{}/*.csv".format(dir)
     fn_csv = glob.glob(fn_csv)
     for fn in fn_csv:
         recp = pd.read_csv(fn,
-                           names=['Odometer', 'FrameNum'],
-                           skiprows=2, delimiter=',')
+                   names=['Odometer', 'FrameNum'],
+                   skiprows=2, delimiter=',')
         if recp.empty:
             continue
-        fn_hdf = fn[:-3] + 'h5'
+        fn_hdf = fn[:-3]+'h5'
         h5_var = 'vdo'
         shuffle = True
         fletcher32 = True
@@ -64,7 +60,6 @@ def csv2h5(dir):
                                   )
         os.remove(fn)
 
-
 class TkFileDialog(tk.Frame):
 
     def __init__(self, root):
@@ -73,15 +68,14 @@ class TkFileDialog(tk.Frame):
         self.factor = 8.0
         #self.pano_ante_dist = [3793.5, 30000]
         self.pano_ante_dist = [3793.5, 30000]
-        self.pano_cam_ids = []  # get exported cam ids in the vdo image export function
+        self.pano_cam_ids = [] # get exported cam ids in the vdo image export function
         self.vdo_folders = []
         self.r_d, self.r_d_base = [], []
         self.icon = "euraillogo.ico"
         self.indir, self.LB_dir, self.outdir, self.vdo_dir, self.pano_save_dir, \
-            self.seg_dir, self.poi_dir = tk.StringVar(), tk.StringVar(), tk.StringVar(), tk.StringVar(), \
+        self.seg_dir, self.poi_dir = tk.StringVar(), tk.StringVar(), tk.StringVar(), tk.StringVar(), \
             tk.StringVar(), tk.StringVar(), tk.StringVar()
-        self.GPS_var_cb5, self.img_export, self.multi_folder = tk.BooleanVar(
-        ), tk.BooleanVar(), tk.BooleanVar()
+        self.GPS_var_cb5, self.img_export, self.multi_folder = tk.BooleanVar(), tk.BooleanVar(), tk.BooleanVar()
         self.img_export.set(True)
         self.GPS_var_cb5.set(True)
         self.multi_folder.set(True)
@@ -92,15 +86,13 @@ class TkFileDialog(tk.Frame):
         self.seg_dir.set("")
         self.poi_dir.set("")
         current_folder_path, current_folder_name = os.path.split(os.getcwd())
-        self.outdir.set(r"{}\{}".format(
-            current_folder_path, current_folder_name))
-        self.pano_save_dir.set(r"{}\{}".format(
-            current_folder_path, current_folder_name))
+        self.outdir.set(r"{}\{}".format(current_folder_path, current_folder_name))
+        self.pano_save_dir.set(r"{}\{}".format(current_folder_path, current_folder_name))
         root.iconbitmap(self.icon)
         root.geometry("%dx%d%+d%+d" % (300, 220, 350, 225))
         self.center(root)
         root.wm_title("PROCESSVDO_1.0.0.2")
-        self.button_panel = ttk.Frame(self, padding=(3, 3, 12, 12))
+        self.button_panel = ttk.Frame(self, padding=(3,3,12,12))
 
         self.button_panel.grid(row=0)
 
@@ -115,25 +107,19 @@ class TkFileDialog(tk.Frame):
         self.title_pano_GPS_export = "EXPORT PANO GPS"
         b1 = ttk.Button(self.button_panel, text=self.title_resolution_analyse,
                         command=lambda: self.creat_res_analyse_win(self.title_resolution_analyse, root), width=30)
-        b2 = ttk.Button(self.button_panel, text=self.title_write_hd5,
-                        command=lambda: self.creat_cam_chose_win(self.title_write_hd5), width=30)
+        b2 = ttk.Button(self.button_panel, text=self.title_write_hd5, command=lambda: self.creat_cam_chose_win(self.title_write_hd5), width=30)
         b3 = ttk.Button(self.button_panel, text=self.title_pano_img_export,
                         command=lambda: self.creat_export_pano_img_win(self.title_pano_img_export, root), width=30)
         b4 = ttk.Button(self.button_panel, text=self.title_pano_GPS_export,
-                        command=lambda: self.creat_pano_GPS_win(self.title_pano_GPS_export, root), width=30)
-        b5 = ttk.Button(self.button_panel, text='EXIT',
-                        command=lambda: self.main_exit(root), width=30)
-        b1.grid(row=0, columnspan=5, sticky=tk.W + tk.E, padx=15, pady=5)
-        b2.grid(row=1, column=0, columnspan=5,
-                sticky=tk.W + tk.E, padx=15, pady=5)
-        b3.grid(row=2, column=0, columnspan=5,
-                sticky=tk.W + tk.E, padx=15, pady=5)
-        b4.grid(row=3, column=0, columnspan=5,
-                sticky=tk.W + tk.E, padx=15, pady=5)
-        b5.grid(row=4, column=0, columnspan=5,
-                sticky=tk.W + tk.E, padx=15, pady=5)
-        root.rowconfigure(0, weight=1)
-        root.columnconfigure(0, weight=1)
+                        command=lambda : self.creat_pano_GPS_win(self.title_pano_GPS_export, root), width=30)
+        b5 = ttk.Button(self.button_panel, text='EXIT', command=lambda: self.main_exit(root), width=30)
+        b1.grid(row=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        b2.grid(row=1, column=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        b3.grid(row=2, column=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        b4.grid(row=3, column=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        b5.grid(row=4, column=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        root.rowconfigure(0, weight = 1)
+        root.columnconfigure(0, weight = 1)
         self.button_panel.rowconfigure(0, weight=1)
         self.button_panel.rowconfigure(1, weight=1)
         self.button_panel.rowconfigure(2, weight=1)
@@ -197,11 +183,13 @@ class TkFileDialog(tk.Frame):
         options['title'] = 'This is a title'
 
     def askopenfile(self):
+
         """Returns an opened file in read mode."""
 
         return fd.askopenfile(mode='r', **self.file_opt)
 
     def askopenfilename(self):
+
         """Returns an opened file in read mode.
         This time the dialog just returns a filename and the file is opened by your own code.
         """
@@ -214,6 +202,7 @@ class TkFileDialog(tk.Frame):
             return open(filename, 'r')
 
     def ask_in_directory(self):
+
         """Returns a selected directoryname."""
         self.in_dir_opt['initialdir'] = self.indir.get()
         self.grab_set()
@@ -222,6 +211,7 @@ class TkFileDialog(tk.Frame):
         return self.indir
 
     def ask_out_directory(self):
+
         """Returns a selected directoryname."""
         self.out_dir_opt['initialdir'] = self.outdir.get()
         self.grab_set()
@@ -230,6 +220,7 @@ class TkFileDialog(tk.Frame):
         return self.outdir
 
     def ask_LB_directory(self):
+
         """Returns a selected directoryname."""
         self.LB_dir_opt['initialdir'] = self.LB_dir.get()
         self.grab_set()
@@ -238,6 +229,7 @@ class TkFileDialog(tk.Frame):
         return self.LB_dir
 
     def ask_pano_vdo_directory(self):
+
         """Returns a selected directoryname."""
         self.pano_vdo_dir_opt['initialdir'] = self.vdo_dir.get()
         self.grab_set()
@@ -246,6 +238,7 @@ class TkFileDialog(tk.Frame):
         return self.vdo_dir
 
     def ask_pano_save_directory(self):
+
         """Returns a selected directoryname."""
         self.pano_save_dir_opt['initialdir'] = self.pano_save_dir.get()
         self.grab_set()
@@ -254,6 +247,7 @@ class TkFileDialog(tk.Frame):
         return self.pano_save_dir
 
     def ask_seg_directory(self):
+
         """Returns a selected directoryname."""
         self.seg_dir_opt['initialdir'] = self.seg_dir.get()
         self.grab_set()
@@ -262,6 +256,7 @@ class TkFileDialog(tk.Frame):
         return self.seg_dir
 
     def ask_poi_directory(self):
+
         """Returns a selected directoryname."""
         self.poi_dir_opt['initialdir'] = self.poi_dir.get()
         self.grab_set()
@@ -275,8 +270,8 @@ class TkFileDialog(tk.Frame):
         w = root.winfo_screenwidth()
         h = root.winfo_screenheight()
         size = tuple(int(_) for _ in root.geometry().split('+')[0].split('x'))
-        x = w / 2 - size[0] / 2
-        y = h / 2 - size[1] / 2
+        x = w/2 - size[0]/2
+        y = h/2 - size[1]/2
         root.geometry("%dx%d+%d+%d" % (size + (x, y)))
 
     def creat_res_analyse_win(self, title_name, root):
@@ -289,214 +284,164 @@ class TkFileDialog(tk.Frame):
         self.top_res_analyse.iconbitmap(self.icon)
         self.title_b_vdo = "From VDO..."
         self.title_b_h5 = "From HDF5..."
-        b_vdo = ttk.Button(self.top_res_analyse, text=self.title_b_vdo,
+        b_vdo = ttk.Button(self.top_res_analyse, text=self.title_b_vdo, \
                            command=lambda: self.creat_res_analyse_vdo_win(self.title_b_vdo, self.top_res_analyse), width=20)
-        b_h5 = ttk.Button(self.top_res_analyse, text=self.title_b_h5,
-                          comman=lambda: self.creat_res_analyse_h5_win(self.title_b_h5, self.top_res_analyse), width=20)
-        b_vdo.grid(row=0, columnspan=5, sticky=tk.W + tk.E, padx=15, pady=5)
-        b_h5.grid(row=1, column=0, columnspan=5,
-                  sticky=tk.W + tk.E, padx=15, pady=5)
-        self.top_res_analyse.rowconfigure(0, weight=0)
-        self.top_res_analyse.columnconfigure(0, weight=1)
+        b_h5 =  ttk.Button(self.top_res_analyse, text=self.title_b_h5, \
+                           comman=lambda: self.creat_res_analyse_h5_win(self.title_b_h5, self.top_res_analyse), width=20)
+        b_vdo.grid(row=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        b_h5.grid(row=1, column=0, columnspan = 5, sticky=tk.W+tk.E, padx = 15, pady = 5)
+        self.top_res_analyse.rowconfigure(0, weight = 0)
+        self.top_res_analyse.columnconfigure(0, weight = 1)
 
     def creat_res_analyse_h5_win(self, title_name, root):
 
         self.top_res_analyse_h5 = tk.Toplevel(root)
         self.top_res_analyse_h5.grab_set()
         self.top_res_analyse_h5.geometry("%dx%d%+d%+d" % (700, 150, 450, 125))
-        # self.center(self.top_res_analyse_h5)
+        #self.center(self.top_res_analyse_h5)
         self.top_res_analyse_h5.wm_title(title_name)
         self.top_res_analyse_h5.iconbitmap(self.icon)
-        LB_path_label = ttk.Label(
-            self.top_res_analyse_h5, text="LockBox Path:")
+        LB_path_label = ttk.Label(self.top_res_analyse_h5, text = "LockBox Path:")
         h5_path_label = ttk.Label(self.top_res_analyse_h5, text="HDF5 Path:")
         row0 = 0
-        LB_path_label.grid(
-            row=1 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        h5_path_label.grid(row=row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
+        LB_path_label.grid(row = 1 + row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        h5_path_label.grid(row = row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
 
-        LB_button_browse = ttk.Button(
-            self.top_res_analyse_h5, text="Browse ...", command=self.ask_LB_directory, width=10)
-        h5_button_browse = ttk.Button(
-            self.top_res_analyse_h5, text="Browse ...", command=self.ask_out_directory, width=10)
+        LB_button_browse = ttk.Button(self.top_res_analyse_h5, text = "Browse ...", command = self.ask_LB_directory, width = 10)
+        h5_button_browse = ttk.Button(self.top_res_analyse_h5, text = "Browse ...", command = self.ask_out_directory, width = 10)
 
-        LB_entry_path = ttk.Entry(
-            self.top_res_analyse_h5, textvariable=self.LB_dir)
-        h5_entry_path = ttk.Entry(
-            self.top_res_analyse_h5, textvariable=self.outdir)
-        LB_entry_path.grid(row=1 + row0, column=1, columnspan=4,
-                           sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        h5_entry_path.grid(row=row0, column=1, columnspan=4,
-                           sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        LB_button_browse.grid(row=1 + row0, column=5,
-                              sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        h5_button_browse.grid(row=row0, column=5, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        LB_entry_path = ttk.Entry(self.top_res_analyse_h5, textvariable = self.LB_dir)
+        h5_entry_path = ttk.Entry(self.top_res_analyse_h5, textvariable = self.outdir)
+        LB_entry_path.grid(row = 1 + row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        h5_entry_path.grid(row = row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        LB_button_browse.grid(row = 1 + row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        h5_button_browse.grid(row = row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
 
         self.top_res_analyse_h5.columnconfigure(1, weight=1)
         self.top_res_analyse_h5.rowconfigure(0, weight=0)
 
-        b_ok = ttk.Button(self.top_res_analyse_h5, text="Output Graph",
-                          width=13, command=self.show_progress_h52graph)
-        button_cancel = ttk.Button(self.top_res_analyse_h5, text="Cancel", width=13,
-                                   command=lambda: self.toplevel_exit(self.top_res_analyse_h5, self.top_res_analyse))
-        b_ok.grid(row=2 + row0, column=4)
-        button_cancel.grid(row=2 + row0, column=5)
-        self.pb_h5 = ttk.Progressbar(
-            self.top_res_analyse_h5, orient='horizontal', mode='determinate')
-        self.pb_h5.grid(row=2 + row0, column=0, columnspan=4,
-                        sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
-        self.status_frame = tk.Frame(
-            self.top_res_analyse_h5, borderwidth=5, width=80, height=100)
-        self.status_frame.grid(row=3 + row0, column=0,
-                               columnspan=4, sticky=(tk.S, tk.N, tk.W))
-        self.status_h5 = ttk.Label(self.status_frame, text="Waiting ...")
+        b_ok = ttk.Button(self.top_res_analyse_h5, text = "Output Graph", width = 13, command = self.show_progress_h52graph)
+        button_cancel = ttk.Button(self.top_res_analyse_h5, text = "Cancel", width = 13,
+                                   command= lambda: self.toplevel_exit(self.top_res_analyse_h5, self.top_res_analyse))
+        b_ok.grid(row=2 + row0, column = 4)
+        button_cancel.grid(row=2 + row0, column = 5)
+        self.pb_h5 = ttk.Progressbar(self.top_res_analyse_h5, orient='horizontal', mode='determinate')
+        self.pb_h5.grid(row=2 + row0, column=0, columnspan=4, sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
+        self.status_frame = tk.Frame(self.top_res_analyse_h5, borderwidth=5, width=80, height=100)
+        self.status_frame.grid(row=3+row0, column=0, columnspan=4, sticky=(tk.S, tk.N, tk.W))
+        self.status_h5 = ttk.Label(self.status_frame, text = "Waiting ...")
         #self.status_h5.grid(row=3 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5)
-        self.status_h5.grid(row=0 + row0, column=0,
-                            sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
+        self.status_h5.grid(row=0 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
 
     def creat_res_analyse_vdo_win(self, title_name, root):
 
         self.top_cam_chose_res_analyse = tk.Toplevel(root)
         self.top_cam_chose_res_analyse.grab_set()
-        self.top_cam_chose_res_analyse.geometry(
-            "%dx%d%+d%+d" % (800, 550, 450, 125))
+        self.top_cam_chose_res_analyse.geometry("%dx%d%+d%+d" % (800, 550, 450, 125))
         self.top_cam_chose_res_analyse.wm_title(title_name)
         self.top_cam_chose_res_analyse.iconbitmap(self.icon)
-        LB_path_label = ttk.Label(
-            self.top_cam_chose_res_analyse, text="LockBox Path:")
-        LB_path_label.grid(row=0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        LB_entry_path = ttk.Entry(
-            self.top_cam_chose_res_analyse, textvariable=self.LB_dir)
-        LB_entry_path.grid(row=0, column=1, columnspan=4, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        LB_button_browse = ttk.Button(
-            self.top_cam_chose_res_analyse, text="Browse ...", command=self.ask_LB_directory, width=10)
-        LB_button_browse.grid(row=0, column=5, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        LB_path_label = ttk.Label(self.top_cam_chose_res_analyse, text = "LockBox Path:")
+        LB_path_label.grid(row = 0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        LB_entry_path = ttk.Entry(self.top_cam_chose_res_analyse, textvariable = self.LB_dir)
+        LB_entry_path.grid(row = 0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        LB_button_browse = ttk.Button(self.top_cam_chose_res_analyse, text = "Browse ...", command = self.ask_LB_directory, width = 10)
+        LB_button_browse.grid(row = 0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
         row0 = 1
-        self.cam_chose_widget(self.top_cam_chose_res_analyse, self.top_res_analyse, row0=row0, button_ok_name="Output Graph",
+        self.cam_chose_widget(self.top_cam_chose_res_analyse, self.top_res_analyse, row0 = row0, button_ok_name="Output Graph",
                               command=self.show_progress_vdo2graph)
         self.top_cam_chose_res_analyse.columnconfigure(1, weight=1)
         self.top_cam_chose_res_analyse.rowconfigure(0, weight=0)
 
     def creat_cam_chose_win(self, title_name):
 
-        self.top1 = tk.Toplevel(self)  # popup new window
-        self.top1.grab_set()  # disable the background window
+        self.top1 = tk.Toplevel(self) # popup new window
+        self.top1.grab_set() # disable the background window
         self.top1.geometry("%dx%d%+d%+d" % (800, 450, 450, 125))
         self.top1.wm_title(title_name)
         self.top1.iconbitmap(self.icon)
-        self.cam_chose_widget(self.top1, self.button_panel,
-                              command=self.show_progress_generate_h5)
+        self.cam_chose_widget(self.top1, self.button_panel, command=self.show_progress_generate_h5)
 
         #content.columnconfigure(2, weight=1)
         #content.columnconfigure(3, weight=1)
         #content.columnconfigure(4, weight=1)
 
         #l = tk.Label(t, text="lable1")
-        # l.pack(side="top",fill="both",expand=True,padx=100,pady=100)
+        #l.pack(side="top",fill="both",expand=True,padx=100,pady=100)
 
     def cam_chose_widget(self, toplevel, downlevel, row0=0, button_ok_name="Output HDF5", command=None):
 
         #toplevel = ttk.Frame(toplevel,padding=(3,3,3,3))
         #toplevel.grid(column=0, row=0, sticky=(tk.N, tk.S, tk.E, tk.W))
-        frame_cam_5 = tk.Frame(toplevel, relief="sunken",
-                               borderwidth=5, width=80, height=100)
-        frame_cam_6 = tk.Frame(toplevel, relief="sunken",
-                               borderwidth=5, width=80, height=100)
-        frame_cam_7 = tk.Frame(toplevel, relief="sunken",
-                               borderwidth=5, width=80, height=100)
-        frame_cam_5.grid(row=2 + row0, column=0, rowspan=2,
-                         columnspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
-        frame_cam_6.grid(row=4 + row0, column=0, rowspan=2,
-                         columnspan=4, sticky=(tk.N, tk.S, tk.E, tk.W))
-        frame_cam_7.grid(row=6 + row0, column=0, rowspan=2,
-                         columnspan=4, sticky=(tk.N, tk.S, tk.E, tk.W))
+        frame_cam_5 = tk.Frame(toplevel, relief="sunken", borderwidth=5, width=80, height=100)
+        frame_cam_6 = tk.Frame(toplevel, relief="sunken", borderwidth=5, width=80, height=100)
+        frame_cam_7 = tk.Frame(toplevel, relief="sunken", borderwidth=5, width=80, height=100)
+        frame_cam_5.grid(row = 2 + row0, column = 0, rowspan = 2, columnspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
+        frame_cam_6.grid(row = 4 + row0, column = 0, rowspan = 2, columnspan=4, sticky=(tk.N, tk.S, tk.E, tk.W))
+        frame_cam_7.grid(row = 6 + row0, column = 0, rowspan = 2, columnspan=4, sticky=(tk.N, tk.S, tk.E, tk.W))
 
-        label_in_path = ttk.Label(toplevel, text="VDO Path:")
+        label_in_path = ttk.Label(toplevel, text = "VDO Path:")
         label_out_path = ttk.Label(toplevel, text="Save Path:")
-        label_in_path.grid(row=row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        label_out_path.grid(
-            row=1 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
+        label_in_path.grid(row = row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        label_out_path.grid(row = 1 + row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
         #self.status = ttk.Label(toplevel, text = "Waiting ...")
         #self.status.grid(row=9 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5)
         self.status_f = tk.Frame(toplevel, borderwidth=5, width=80, height=100)
-        self.status_f.grid(row=9 + row0, column=0,
-                           columnspan=4, sticky=(tk.S, tk.N, tk.W))
-        self.status_lb = ttk.Label(self.status_f, text="Waiting ...")
-        self.status_lb.grid(row=0 + row0, column=0,
-                            sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
+        self.status_f.grid(row=9+row0, column=0, columnspan=4, sticky=(tk.S, tk.N, tk.W))
+        self.status_lb = ttk.Label(self.status_f, text = "Waiting ...")
+        self.status_lb.grid(row=0 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
 
-        in_button_browse = ttk.Button(
-            toplevel, text="Browse ...", command=self.ask_in_directory, width=10)
-        out_button_browse = ttk.Button(
-            toplevel, text="Browse ...", command=self.ask_out_directory, width=10)
+        in_button_browse = ttk.Button(toplevel, text = "Browse ...", command = self.ask_in_directory, width = 10)
+        out_button_browse = ttk.Button(toplevel, text = "Browse ...", command = self.ask_out_directory, width = 10)
 
-        in_entry_path = ttk.Entry(toplevel, textvariable=self.indir)
-        out_entry_path = ttk.Entry(toplevel, textvariable=self.outdir)
-        in_entry_path.grid(row=row0, column=1, columnspan=4,
-                           sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        out_entry_path.grid(row=1 + row0, column=1, columnspan=4,
-                            sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        in_button_browse.grid(row=row0, column=5, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        out_button_browse.grid(row=1 + row0, column=5,
-                               sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        in_entry_path = ttk.Entry(toplevel, textvariable = self.indir)
+        out_entry_path = ttk.Entry(toplevel, textvariable = self.outdir)
+        in_entry_path.grid(row = row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        out_entry_path.grid(row = 1 + row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        in_button_browse.grid(row = row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        out_button_browse.grid(row = 1 + row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
 
         self.cam_5 = ["c50", "c51"]
         self.cam_6 = ["60", "61", "64", "65"]
         self.cam_7 = ["70", "71", "74", "75"]
         cb6, cb7, cb5 = {}, {}, {}
-        self.var_6, self.var_7, self.var_5 = {}, {}, {}  # checkbutton Boolean variable
+        self.var_6, self.var_7, self.var_5 = {}, {}, {} # checkbutton Boolean variable
         #self.vars_6, self.vars_7, self.vars_5 = [], [], []
-        self.m_var_cb5, self.m_var_cb6, self.m_var_cb7 = tk.BooleanVar(
-        ), tk.BooleanVar(), tk.BooleanVar()
+        self.m_var_cb5, self.m_var_cb6, self.m_var_cb7 = tk.BooleanVar(), tk.BooleanVar(), tk.BooleanVar()
         self.m_var_cb5.set(True)
         self.m_var_cb6.set(True)
         self.m_var_cb7.set(True)
-        main_cb5 = ttk.Checkbutton(frame_cam_5, text="pano_cam", variable=self.m_var_cb5,
-                                   command=lambda: self.main_cb5_control(self.m_var_cb5, self.var_5))
-        main_cb6 = ttk.Checkbutton(
-            frame_cam_6, text="linear_cam_6", variable=self.m_var_cb6, command=self.main_cb6_control)
-        main_cb7 = ttk.Checkbutton(
-            frame_cam_7, text="linear_cam_7", variable=self.m_var_cb7, command=self.main_cb7_control)
-        main_cb5.grid(row=0, sticky=(tk.E), pady=5, padx=5)
-        main_cb6.grid(row=0, sticky=(tk.E), pady=5, padx=5)
-        main_cb7.grid(row=0, sticky=(tk.E), pady=5, padx=5)
+        main_cb5 = ttk.Checkbutton(frame_cam_5, text = "pano_cam", variable = self.m_var_cb5, command=lambda: self.main_cb5_control(self.m_var_cb5, self.var_5))
+        main_cb6 = ttk.Checkbutton(frame_cam_6, text = "linear_cam_6", variable = self.m_var_cb6, command=self.main_cb6_control)
+        main_cb7 = ttk.Checkbutton(frame_cam_7, text = "linear_cam_7", variable = self.m_var_cb7, command=self.main_cb7_control)
+        main_cb5.grid(row = 0, sticky=(tk.E), pady=5, padx=5)
+        main_cb6.grid(row = 0, sticky=(tk.E), pady=5, padx=5)
+        main_cb7.grid(row = 0, sticky=(tk.E), pady=5, padx=5)
 
         for i, c_id in enumerate(self.cam_5):
             self.var_5[i] = tk.BooleanVar()
             self.var_5[i].set(1)
-            cb5[i] = ttk.Checkbutton(frame_cam_5, variable=self.var_5[
-                                     i], onvalue=1, offvalue=0, text="cam_{}".format(c_id))
-            # self.vars_5.append(self.var_5[i].get())
-            cb5[i].grid(row=1, column=i, sticky=(tk.E), pady=5, padx=5)
+            cb5[i] = ttk.Checkbutton(frame_cam_5, variable = self.var_5[i], onvalue=1, offvalue=0, text = "cam_{}".format(c_id))
+            #self.vars_5.append(self.var_5[i].get())
+            cb5[i].grid(row=1,column=i, sticky=(tk.E), pady=5, padx=5)
         for i, c_id in enumerate(self.cam_6):
             self.var_6[i] = tk.BooleanVar()
             self.var_6[i].set(1)
-            cb6[i] = ttk.Checkbutton(frame_cam_6, variable=self.var_6[
-                                     i], onvalue=1, offvalue=0, text="cam_{}".format(c_id))
-            # self.vars_6.append(self.var_6[i].get())
-            cb6[i].grid(row=1, column=i, sticky=(tk.E), pady=5, padx=5)
+            cb6[i] = ttk.Checkbutton(frame_cam_6, variable = self.var_6[i], onvalue=1, offvalue=0, text = "cam_{}".format(c_id))
+            #self.vars_6.append(self.var_6[i].get())
+            cb6[i].grid(row=1,column=i, sticky=(tk.E), pady=5, padx=5)
         for i, c_id in enumerate(self.cam_7):
             self.var_7[i] = tk.BooleanVar()
             self.var_7[i].set(1)
-            cb7[i] = ttk.Checkbutton(frame_cam_7, variable=self.var_7[
-                                     i], onvalue=1, offvalue=0, text="cam_{}".format(c_id))
-            # self.vars_7.append(self.var_7[i].get())
-            cb7[i].grid(row=1, column=i, sticky=(tk.E), pady=5, padx=5)
+            cb7[i] = ttk.Checkbutton(frame_cam_7, variable = self.var_7[i], onvalue=1, offvalue=0, text = "cam_{}".format(c_id))
+            #self.vars_7.append(self.var_7[i].get())
+            cb7[i].grid(row=1,column=i, sticky=(tk.E), pady=5, padx=5)
 
-        button_ok = ttk.Button(
-            toplevel, text=button_ok_name, width=13, command=command)
-        button_cancel = ttk.Button(toplevel, text="Cancel", width=13,
-                                   command=lambda: self.toplevel_exit(toplevel, downlevel))
-        button_ok.grid(row=8 + row0, column=4)
-        button_cancel.grid(row=8 + row0, column=5)
-        self.pb = ttk.Progressbar(
-            toplevel, orient='horizontal', mode='determinate')
-        self.pb.grid(row=8 + row0, column=0, columnspan=4,
-                     sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
+        button_ok = ttk.Button(toplevel, text = button_ok_name, width = 13, command = command)
+        button_cancel = ttk.Button(toplevel, text = "Cancel", width = 13, command= lambda: self.toplevel_exit(toplevel, downlevel))
+        button_ok.grid(row=8 + row0, column = 4)
+        button_cancel.grid(row=8 + row0, column = 5)
+        self.pb = ttk.Progressbar(toplevel, orient='horizontal', mode='determinate')
+        self.pb.grid(row=8 + row0, column=0, columnspan=4, sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
 
         toplevel.columnconfigure(0, weight=1)
         toplevel.rowconfigure(0, weight=1)
@@ -515,201 +460,144 @@ class TkFileDialog(tk.Frame):
         self.top_export_pano_img = tk.Toplevel(root)
         self.top_export_pano_img.grab_set()
         self.top_export_pano_img.geometry("%dx%d%+d%+d" % (830, 240, 450, 125))
-        # self.center(self.top_export_pano_img)
+        #self.center(self.top_export_pano_img)
         self.top_export_pano_img.wm_title(title_name)
         self.top_export_pano_img.iconbitmap(self.icon)
-        vdo_path_label = ttk.Label(self.top_export_pano_img, text="VDO Path:")
-        pano_img_save_path_label = ttk.Label(
-            self.top_export_pano_img, text="Img Save Path:")
+        vdo_path_label = ttk.Label(self.top_export_pano_img, text = "VDO Path:")
+        pano_img_save_path_label = ttk.Label(self.top_export_pano_img, text = "Img Save Path:")
         row0 = 0
-        vdo_path_label.grid(
-            row=0 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        pano_img_save_path_label.grid(
-            row=1 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        vdo_button_browse = ttk.Button(
-            self.top_export_pano_img, text="Browse ...", command=self.ask_pano_vdo_directory, width=10)
-        save_button_browse = ttk.Button(
-            self.top_export_pano_img, text="Browse ...", command=self.ask_pano_save_directory, width=10)
-        vdo_entry_path = ttk.Entry(
-            self.top_export_pano_img, textvariable=self.vdo_dir)
-        save_entry_path = ttk.Entry(
-            self.top_export_pano_img, textvariable=self.pano_save_dir)
-        vdo_entry_path.grid(row=row0, column=1, columnspan=4, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        save_entry_path.grid(row=1 + row0, column=1, columnspan=4,
-                             sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        vdo_button_browse.grid(row=row0, column=5, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        save_button_browse.grid(row=1 + row0, column=5,
-                                sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        vdo_path_label.grid(row =0 + row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        pano_img_save_path_label.grid(row =1 + row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        vdo_button_browse = ttk.Button(self.top_export_pano_img, text ="Browse ...", command = self.ask_pano_vdo_directory, width = 10)
+        save_button_browse = ttk.Button(self.top_export_pano_img, text ="Browse ...", command = self.ask_pano_save_directory, width = 10)
+        vdo_entry_path = ttk.Entry(self.top_export_pano_img, textvariable =self.vdo_dir)
+        save_entry_path = ttk.Entry(self.top_export_pano_img, textvariable =self.pano_save_dir)
+        vdo_entry_path.grid(row = row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        save_entry_path.grid(row =1 + row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        vdo_button_browse.grid(row = row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        save_button_browse.grid(row =1 + row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
 
-        frame_cam_5 = tk.Frame(
-            self.top_export_pano_img, relief="sunken", borderwidth=5, width=80, height=100)
-        frame_cam_5.grid(row=2 + row0, column=0, rowspan=2,
-                         columnspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
+        frame_cam_5 = tk.Frame(self.top_export_pano_img, relief="sunken", borderwidth=5, width=80, height=100)
+        frame_cam_5.grid(row = 2 + row0, column = 0, rowspan = 2, columnspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
         # deactivate rear camera "c51"
         if self.deact_rear:
             self.cam_5 = ["c50"]
         else:
             self.cam_5 = ["c50", "c51"]
         cb5 = {}
-        self.GPS_var_5 = {}  # checkbutton Boolean variable
+        self.GPS_var_5 = {} # checkbutton Boolean variable
         #self.vars_6, self.vars_7, self.vars_5 = [], [], []
         self.GPS_var_cb5 = tk.BooleanVar()
         self.GPS_var_cb5.set(True)
-        main_cb5 = ttk.Checkbutton(frame_cam_5, text="pano_cam", variable=self.GPS_var_cb5,
+        main_cb5 = ttk.Checkbutton(frame_cam_5, text = "pano_cam", variable = self.GPS_var_cb5,
                                    command=lambda: self.main_cb5_control(self.GPS_var_cb5, self.GPS_var_5))
-        img_export = ttk.Checkbutton(
-            frame_cam_5, text="img_export", variable=self.img_export)
-        run_day = ttk.Checkbutton(
-            frame_cam_5, text="multi_folder(run_day)", variable=self.multi_folder)
-        main_cb5.grid(row=0, sticky=(tk.E), pady=5, padx=5)
-        img_export.grid(row=0, column=1, sticky=(tk.E), pady=5, padx=5)
+        img_export = ttk.Checkbutton(frame_cam_5, text="img_export", variable=self.img_export)
+        run_day = ttk.Checkbutton(frame_cam_5, text="multi_folder(run_day)", variable=self.multi_folder)
+        main_cb5.grid(row = 0, sticky=(tk.E), pady=5, padx=5)
+        img_export.grid(row = 0, column=1, sticky=(tk.E), pady=5, padx=5)
         run_day.grid(row=0, column=2, sticky=(tk.E), pady=5, padx=5)
         for i, c_id in enumerate(self.cam_5):
             self.GPS_var_5[i] = tk.BooleanVar()
             self.GPS_var_5[i].set(1)
-            cb5[i] = ttk.Checkbutton(frame_cam_5, variable=self.GPS_var_5[
-                                     i], onvalue=1, offvalue=0, text="cam_{}".format(c_id))
-            # self.vars_5.append(self.var_5[i].get())
-            cb5[i].grid(row=1, column=i, sticky=(tk.E), pady=5, padx=5)
+            cb5[i] = ttk.Checkbutton(frame_cam_5, variable = self.GPS_var_5[i], onvalue=1, offvalue=0, text ="cam_{}".format(c_id))
+            #self.vars_5.append(self.var_5[i].get())
+            cb5[i].grid(row=1,column=i, sticky=(tk.E), pady=5, padx=5)
 
         self.top_export_pano_img.columnconfigure(1, weight=1)
         self.top_export_pano_img.rowconfigure(2, weight=1)
 
-        b_out = ttk.Button(self.top_export_pano_img, text="Output Pano Img",
-                           command=lambda: self.show_progress_export_pano_img(self.pb_pano, self.status_pano), width=17)
-        b_dpc = ttk.Button(self.top_export_pano_img, text="DPC Img CSV",
-                           command=self.show_progress_export_pano_img_dpc, width=17)
-        button_cancel = ttk.Button(self.top_export_pano_img, text="Cancel",
-                                   width=15, command=lambda: self.main_exit(self.top_export_pano_img))
-        b_out.grid(row=4 + row0, column=4)
-        b_dpc.grid(row=4 + row0, column=3)
-        button_cancel.grid(row=4 + row0, column=5)
-        self.pb_pano = ttk.Progressbar(
-            self.top_export_pano_img, orient='horizontal', mode='determinate')
-        self.pb_pano.grid(row=4 + row0, column=0, columnspan=2,
-                          sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
-        self.status_frame_pano = tk.Frame(
-            self.top_export_pano_img, borderwidth=5, width=80, height=100)
-        self.status_frame_pano.grid(
-            row=5 + row0, column=0, columnspan=4, sticky=(tk.S, tk.N, tk.W))
-        self.status_pano = ttk.Label(
-            self.status_frame_pano, text="Waiting ...")
-        self.status_pano.grid(row=0 + row0, column=0,
-                              sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
+        b_out = ttk.Button(self.top_export_pano_img, text ="Output Pano Img",
+                           command=lambda : self.show_progress_export_pano_img(self.pb_pano, self.status_pano), width = 17)
+        b_dpc = ttk.Button(self.top_export_pano_img, text ="DPC Img CSV", command=self.show_progress_export_pano_img_dpc, width = 17)
+        button_cancel = ttk.Button(self.top_export_pano_img, text ="Cancel", width = 15, command= lambda: self.main_exit(self.top_export_pano_img))
+        b_out.grid(row=4 + row0, column = 4)
+        b_dpc.grid(row=4+row0, column=3)
+        button_cancel.grid(row=4 + row0, column = 5)
+        self.pb_pano = ttk.Progressbar(self.top_export_pano_img, orient='horizontal', mode='determinate')
+        self.pb_pano.grid(row=4 + row0, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
+        self.status_frame_pano = tk.Frame(self.top_export_pano_img, borderwidth=5, width=80, height=100)
+        self.status_frame_pano.grid(row=5 + row0, column=0, columnspan=4, sticky=(tk.S, tk.N, tk.W))
+        self.status_pano = ttk.Label(self.status_frame_pano, text = "Waiting ...")
+        self.status_pano.grid(row=0 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
 
     def creat_pano_GPS_win(self, title_name, root):
 
         self.top_pano_GPS_export = tk.Toplevel(root)
         self.top_pano_GPS_export.grab_set()
         self.top_pano_GPS_export.geometry("%dx%d%+d%+d" % (800, 320, 450, 125))
-        # self.center(self.top_pano_GPS_export)
+        #self.center(self.top_pano_GPS_export)
         self.top_pano_GPS_export.wm_title(title_name)
         self.top_pano_GPS_export.iconbitmap(self.icon)
-        vdo_path_label = ttk.Label(
-            self.top_pano_GPS_export, text="VDO path (m_d):")
-        seg_path_label = ttk.Label(
-            self.top_pano_GPS_export, text="Seg file Path:")
-        poi_path_label = ttk.Label(
-            self.top_pano_GPS_export, text="Poi file Path:")
-        GPS_save_path_label = ttk.Label(
-            self.top_pano_GPS_export, text="GPS Save Path:")
+        vdo_path_label = ttk.Label(self.top_pano_GPS_export, text ="VDO path (m_d):")
+        seg_path_label = ttk.Label(self.top_pano_GPS_export, text="Seg file Path:")
+        poi_path_label = ttk.Label(self.top_pano_GPS_export, text="Poi file Path:")
+        GPS_save_path_label = ttk.Label(self.top_pano_GPS_export, text = "GPS Save Path:")
 
         row0 = 0
-        vdo_path_label.grid(row=row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        seg_path_label.grid(
-            row=1 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        poi_path_label.grid(
-            row=2 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
-        GPS_save_path_label.grid(
-            row=3 + row0, sticky=(tk.S, tk.N, tk.E, tk.W), padx=5)
+        vdo_path_label.grid(row = row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        seg_path_label.grid(row = 1+row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        poi_path_label.grid(row = 2+row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
+        GPS_save_path_label.grid(row =3 + row0, sticky = (tk.S, tk.N, tk.E, tk.W), padx = 5)
 
-        vdo_button_browse = ttk.Button(
-            self.top_pano_GPS_export, text="Browse ...", command=self.ask_pano_vdo_directory, width=10)
-        seg_button_browse = ttk.Button(
-            self.top_pano_GPS_export, text="Browse ...", command=self.ask_seg_directory, width=10)
-        poi_button_browse = ttk.Button(
-            self.top_pano_GPS_export, text="Browse ...", command=self.ask_poi_directory, width=10)
-        save_button_browse = ttk.Button(
-            self.top_pano_GPS_export, text="Browse ...", command=self.ask_pano_save_directory, width=10)
+        vdo_button_browse = ttk.Button(self.top_pano_GPS_export, text ="Browse ...", command = self.ask_pano_vdo_directory, width = 10)
+        seg_button_browse = ttk.Button(self.top_pano_GPS_export, text ="Browse ...", command = self.ask_seg_directory, width = 10)
+        poi_button_browse = ttk.Button(self.top_pano_GPS_export, text ="Browse ...", command = self.ask_poi_directory, width = 10)
+        save_button_browse = ttk.Button(self.top_pano_GPS_export, text ="Browse ...", command = self.ask_pano_save_directory, width = 10)
 
-        vdo_entry_path = ttk.Entry(
-            self.top_pano_GPS_export, textvariable=self.vdo_dir)
-        seg_entry_path = ttk.Entry(
-            self.top_pano_GPS_export, textvariable=self.seg_dir)
-        poi_entry_path = ttk.Entry(
-            self.top_pano_GPS_export, textvariable=self.poi_dir)
-        save_entry_path = ttk.Entry(
-            self.top_pano_GPS_export, textvariable=self.pano_save_dir)
+        vdo_entry_path = ttk.Entry(self.top_pano_GPS_export, textvariable = self.vdo_dir)
+        seg_entry_path = ttk.Entry(self.top_pano_GPS_export, textvariable = self.seg_dir)
+        poi_entry_path = ttk.Entry(self.top_pano_GPS_export, textvariable = self.poi_dir)
+        save_entry_path = ttk.Entry(self.top_pano_GPS_export, textvariable =self.pano_save_dir)
 
-        vdo_entry_path.grid(row=row0, column=1, columnspan=4, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        seg_entry_path.grid(row=1 + row0, column=1, columnspan=4,
-                            sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        poi_entry_path.grid(row=2 + row0, column=1, columnspan=4,
-                            sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        save_entry_path.grid(row=3 + row0, column=1, columnspan=4,
-                             sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        vdo_entry_path.grid(row = row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        seg_entry_path.grid(row = 1+row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        poi_entry_path.grid(row = 2+row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        save_entry_path.grid(row =3+row0, column = 1, columnspan=4, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
 
-        vdo_button_browse.grid(row=row0, column=5, sticky=(
-            tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        seg_button_browse.grid(row=1 + row0, column=5,
-                               sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        poi_button_browse.grid(row=2 + row0, column=5,
-                               sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
-        save_button_browse.grid(row=3 + row0, column=5,
-                                sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        vdo_button_browse.grid(row = row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        seg_button_browse.grid(row = 1+row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        poi_button_browse.grid(row = 2+row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
+        save_button_browse.grid(row =3+row0, column = 5, sticky=(tk.S, tk.N, tk.E, tk.W), pady=5, padx=5)
 
-        frame_cam_5 = tk.Frame(
-            self.top_pano_GPS_export, relief="sunken", borderwidth=5, width=80, height=100)
-        frame_cam_5.grid(row=4 + row0, column=0, rowspan=2,
-                         columnspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
+        frame_cam_5 = tk.Frame(self.top_pano_GPS_export, relief="sunken", borderwidth=5, width=80, height=100)
+        frame_cam_5.grid(row = 4 + row0, column = 0, rowspan = 2, columnspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
         if self.deact_rear:
             self.cam_5 = ["c50"]
         else:
             self.cam_5 = ["c50", "c51"]
         cb5 = {}
-        self.GPS_var_5 = {}  # checkbutton Boolean variable
+        self.GPS_var_5 = {} # checkbutton Boolean variable
         #self.vars_6, self.vars_7, self.vars_5 = [], [], []
-        main_cb5 = ttk.Checkbutton(frame_cam_5, text="pano_cam", variable=self.GPS_var_cb5,
+        main_cb5 = ttk.Checkbutton(frame_cam_5, text = "pano_cam", variable = self.GPS_var_cb5,
                                    command=lambda: self.main_cb5_control(self.GPS_var_cb5, self.GPS_var_5))
-        img_export = ttk.Checkbutton(
-            frame_cam_5, text="img_export", variable=self.img_export)
-        run_day = ttk.Checkbutton(
-            frame_cam_5, text="multi_folder(run_day)", variable=self.multi_folder)
-        main_cb5.grid(row=0, sticky=(tk.E), pady=5, padx=5)
-        img_export.grid(row=0, column=1, sticky=(tk.E), pady=5, padx=5)
+        img_export = ttk.Checkbutton(frame_cam_5, text="img_export", variable=self.img_export)
+        run_day = ttk.Checkbutton(frame_cam_5, text="multi_folder(run_day)", variable=self.multi_folder)
+        main_cb5.grid(row = 0, sticky=(tk.E), pady=5, padx=5)
+        img_export.grid(row = 0, column=1, sticky=(tk.E), pady=5, padx=5)
         run_day.grid(row=0, column=2, sticky=(tk.E), pady=5, padx=5)
         for i, c_id in enumerate(self.cam_5):
             self.GPS_var_5[i] = tk.BooleanVar()
             self.GPS_var_5[i].set(1)
-            cb5[i] = ttk.Checkbutton(frame_cam_5, variable=self.GPS_var_5[
-                                     i], onvalue=1, offvalue=0, text="cam_{}".format(c_id))
-            # self.vars_5.append(self.var_5[i].get())
-            cb5[i].grid(row=1, column=i, sticky=(tk.E), pady=5, padx=5)
+            cb5[i] = ttk.Checkbutton(frame_cam_5, variable = self.GPS_var_5[i], onvalue=1, offvalue=0, text ="cam_{}".format(c_id))
+            #self.vars_5.append(self.var_5[i].get())
+            cb5[i].grid(row=1,column=i, sticky=(tk.E), pady=5, padx=5)
 
         self.top_pano_GPS_export.columnconfigure(1, weight=1)
         self.top_pano_GPS_export.rowconfigure(0, weight=0)
 
-        b_ok = ttk.Button(self.top_pano_GPS_export, text="Output GPS",
-                          width=13, command=self.show_progress_GPS)
-        button_cancel = ttk.Button(self.top_pano_GPS_export, text="Cancel", width=13,
-                                   command=lambda: self.toplevel_exit(self.top_pano_GPS_export, root))
-        b_ok.grid(row=6 + row0, column=4)
-        button_cancel.grid(row=6 + row0, column=5)
-        self.pb_GPS = ttk.Progressbar(
-            self.top_pano_GPS_export, orient='horizontal', mode='determinate')
-        self.pb_GPS.grid(row=6 + row0, column=0, columnspan=4,
-                         sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
-        self.status_GPS_frame = tk.Frame(
-            self.top_pano_GPS_export, borderwidth=5, width=80, height=100)
-        self.status_GPS_frame.grid(
-            row=7 + row0, column=0, columnspan=4, sticky=(tk.S, tk.N, tk.W))
-        self.status_GPS = ttk.Label(self.status_GPS_frame, text="Waiting ...")
+        b_ok = ttk.Button(self.top_pano_GPS_export, text ="Output GPS", width = 13, command=self.show_progress_GPS)
+        button_cancel = ttk.Button(self.top_pano_GPS_export, text ="Cancel", width = 13,
+                                   command= lambda: self.toplevel_exit(self.top_pano_GPS_export, root))
+        b_ok.grid(row=6 + row0, column = 4)
+        button_cancel.grid(row=6 + row0, column = 5)
+        self.pb_GPS = ttk.Progressbar(self.top_pano_GPS_export, orient='horizontal', mode='determinate')
+        self.pb_GPS.grid(row=6 + row0, column=0, columnspan=4, sticky=(tk.W, tk.E, tk.S, tk.N), padx=5, pady=5)
+        self.status_GPS_frame = tk.Frame(self.top_pano_GPS_export, borderwidth=5, width=80, height=100)
+        self.status_GPS_frame.grid(row=7+row0, column=0, columnspan=4, sticky=(tk.S, tk.N, tk.W))
+        self.status_GPS = ttk.Label(self.status_GPS_frame, text = "Waiting ...")
         #self.status_h5.grid(row=3 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5)
-        self.status_GPS.grid(row=0 + row0, column=0,
-                             sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
+        self.status_GPS.grid(row=0 + row0, column=0, sticky=(tk.S, tk.N, tk.W), padx=5, pady=5)
+
 
     def main_exit(self, root):
 
@@ -725,11 +613,11 @@ class TkFileDialog(tk.Frame):
     def print_cb_res(self):
 
         res = [value.get() for key, value in self.var_5.iteritems()]
-        print(res)
+        print (res)
 
     def get_entry(self):
 
-        print(self.indir.get())
+        print (self.indir.get())
         return self.indir.get()
 
     def main_cb5_control(self, m_var_cb5, var_5):
@@ -798,10 +686,10 @@ class TkFileDialog(tk.Frame):
 
         # resolution analyse
         self.pb_h5.start()
-        options = Options()  # fake options
+        options = Options() # fake options
         if options.debug and not options.use_cams:
             options.use_cams = ['60']
-        # TODO: handle this also in get_args?
+        ## TODO: handle this also in get_args?
         if options.use_cams is None:
             # use all
             if options.debug:
@@ -813,18 +701,16 @@ class TkFileDialog(tk.Frame):
             # empty list -> use_cams
             options.save = options.use_cams
 
-        # TODO: switch automatic between py2exe app and python script app
+        #TODO: switch automatic between py2exe app and python script app
         # Use this only for py2exe application --Shulin
         elif options.save is None:
             options.save = options.use_cams
 
         speed_max = 40
-        select_range = {'subrange_selected': False}
-        # select_range={'subrange_selected' : True, 'offset_dist' : 500,
-        # 'select_dist' : 50*1000} #15092918
+        select_range = {'subrange_selected' : False}
+        #select_range={'subrange_selected' : True, 'offset_dist' : 500, 'select_dist' : 50*1000} #15092918
         self.pb_h5.update()
-        vdo.check.analyseVdo(folder=h5_path, run=None, options=options,
-                             speed_max=speed_max, select_range=select_range)
+        vdo.check.analyseVdo(folder=h5_path, run=None, options=options, speed_max=speed_max, select_range=select_range)
         self.pb_h5.update()
         self.pb_h5.stop()
         self.status_h5["text"] = "Done!"
@@ -852,34 +738,29 @@ class TkFileDialog(tk.Frame):
         # generate arg_list for panorama camera
         for i, val in enumerate(vars_5):
             if val:
-                arg_list.append(
-                    "{}/*{}.vdo".format(self.indir.get(), self.cam_5[i]))
+                arg_list.append("{}/*{}.vdo".format(self.indir.get(), self.cam_5[i]))
 
         # generate arg_list for linear camera
         for i, val in enumerate(vars_6):
             if val:
-                arg_list.append(
-                    "{}/*{}.vdo".format(self.indir.get(), self.cam_6[i]))
+                arg_list.append("{}/*{}.vdo".format(self.indir.get(), self.cam_6[i]))
 
         for i, val in enumerate(vars_7):
             if val:
-                arg_list.append(
-                    r"{}/*{}.vdo".format(self.indir.get(), self.cam_7[i]))
+                arg_list.append(r"{}/*{}.vdo".format(self.indir.get(), self.cam_7[i]))
 
         if not arg_list:
             self.pb.stop()
             self.status_lb["text"] = "Nothing done!"
             return 1
         else:
-            # check whether there exist corresponding vdo files for the camera
-            # selected
+            # check whether there exist corresponding vdo files for the camera selected
             arg_list_vdo = [re.split('/|\\\\', i)[-1] for i in arg_list]
             for vdo in arg_list_vdo:
                 vdos = glob.glob("{}/{}".format(folder, vdo))
                 if not vdos:
                     self.pb.stop()
-                    self.status_lb["text"] = "No {} files exist! Please un-check camera {}!".format(
-                        vdo, re.split('\*|\.', vdo)[1])
+                    self.status_lb["text"] = "No {} files exist! Please un-check camera {}!".format(vdo, re.split('\*|\.', vdo)[1])
                     return 1
             # generate h5 files
             for i, arg in enumerate(arg_list):
@@ -887,9 +768,9 @@ class TkFileDialog(tk.Frame):
                 VR.WriteCSV(arg)
                 self.pb["maximum"] = 100
                 self.pb["value"] = (i + 1) * 100 / len(arg_list)
-            # if folder[-1] == "\\":
+            #if folder[-1] == "\\":
             #    run = re.split('/|\\\\', folder)[-2]
-            # else:
+            #else:
             #    run = re.split('/|\\\\', folder)[-1]
 
             # copy *.event.txt, *.s3db, files
@@ -899,7 +780,7 @@ class TkFileDialog(tk.Frame):
                 fn_evnt = glob.glob(fn_evnt)
                 fn_s3db = glob.glob(fn_s3db)
                 files_copy = [fn_evnt[0], fn_s3db[0]]
-                # print fn_evnt, fn_s3db
+                #print fn_evnt, fn_s3db
             except ValueError:
                 print("event or s3db file(s) ... are missing!")
             evnt = re.split('/|\\\\', fn_evnt[0])[-1]
@@ -909,44 +790,38 @@ class TkFileDialog(tk.Frame):
                 for f in files_copy:
                     shutil.copy(f, run)
             except IOError:
-                print("No external lbd lbe files copied!")
+                    print ("No external lbd lbe files copied!")
 
-            current_folder_path, current_folder_name = os.path.split(
-                os.getcwd())
-            current_h5_dir = "{}/{}/{}".format(
-                current_folder_path, current_folder_name, run)
+            current_folder_path, current_folder_name = os.path.split(os.getcwd())
+            current_h5_dir = "{}/{}/{}".format(current_folder_path, current_folder_name, run)
             if os.path.exists(current_h5_dir):
-                csv2h5(run)  # convert csv to h5
+                csv2h5(run) # convert csv to h5
                 if current_h5_dir != self.outdir.get():
                     des_folder = "{}/".format(self.outdir.get())
                     if not os.path.exists(des_folder):
                         os.makedirs(des_folder)
                     if not os.path.exists("{}/{}".format(des_folder, run)):
-                        # move folder to target directory
-                        shutil.move(current_h5_dir, des_folder)
+                        shutil.move(current_h5_dir, des_folder)# move folder to target directory
                     else:
                         # h5 path and moving path are not the same
                         if os.path.abspath(current_h5_dir) != os.path.abspath("{}/{}".format(des_folder, run)):
                             # overwrite
                             try:
-                                shutil.rmtree(os.path.abspath(
-                                    "{}/{}".format(des_folder, run)))
+                                shutil.rmtree(os.path.abspath("{}/{}".format(des_folder, run)))
                             except IOError:
-                                print("Overwritten error occured!")
-                            shutil.move(os.path.abspath(
-                                current_h5_dir), os.path.abspath(des_folder))
+                                print ("Overwritten error occured!")
+                            shutil.move(os.path.abspath(current_h5_dir), os.path.abspath(des_folder))
                             #tmp = tpf.mkstemp(dir=os.path.dirname("{}/{}".format(des_folder, run)))
                             #shutil.move(os.path.abspath(current_h5_dir), tmp)
-                            # shutil.rmtree(tmp)
-                            print("Destination path already exists!\n"
-                                  "Files are overwritten!")
+                            #shutil.rmtree(tmp)
+                            print ("Destination path already exists!\n" \
+                               "Files are overwritten!")
                         else:
-                            print("self-overwritten is not allowed!\n"
-                                  "Files are saved in default (program) folder!")
+                            print ("self-overwritten is not allowed!\n" \
+                                   "Files are saved in default (program) folder!")
             else:
                 self.pb.stop()
-                self.status_lb[
-                    "text"] = "Generated hdf5 folder does not exists!"
+                self.status_lb["text"] = "Generated hdf5 folder does not exists!"
                 return 1
             self.pb.stop()
             self.status_lb["text"] = "Done!"
@@ -960,7 +835,7 @@ class TkFileDialog(tk.Frame):
         pb.start()
         status["text"] = "Start Processing ..."
         pb["maximum"] = 100
-        cnt = 0  # count the number of folders which donot consist vdo files
+        cnt = 0 # count the number of folders which donot consist vdo files
         run_folder = os.path.abspath(self.vdo_dir.get())
         run_p, run_n = os.path.split(run_folder)
         if not len(run_p):
@@ -988,7 +863,7 @@ class TkFileDialog(tk.Frame):
         if multi_folder:
             # search existing sub-folders
             self.vdo_folders = next(os.walk(run_folder[0]))[1]
-            run_folders = [run_folder[0] + '\\' + v for v in self.vdo_folders]
+            run_folders = [run_folder[0] + '\\' +  v for v in self.vdo_folders]
             if not len(run_folders):
                 status["text"] = "No folders in the selected folder!"
                 pb.stop()
@@ -1020,8 +895,7 @@ class TkFileDialog(tk.Frame):
             for i, val in enumerate(vars_5):
                 if val:
                     self.pano_cam_ids.append("{}".format(self.cam_5[i]))
-            # pano_cam_ids = ['c50', 'c51'] # default img are exported for both
-            # cams
+            #pano_cam_ids = ['c50', 'c51'] # default img are exported for both cams
             if len(self.pano_cam_ids) == 0:
                 status["text"] = "Please select at least one camera!"
                 pb.stop()
@@ -1031,9 +905,8 @@ class TkFileDialog(tk.Frame):
                 #self.queue = Queue.Queue()
                 #ThreadedTask(self.queue, run_folder, cam_id, data_out_option, save_pano_img, Uncertainty).start()
                 #self.top_pano_GPS_export.after(100, self.process_queue)
-                VR.VdoRead(run_folder, cam_id, data_out_option,
-                           save_pano_img, Uncertainty)
-                # if save_pano_img:
+                VR.VdoRead(run_folder, cam_id, data_out_option, save_pano_img, Uncertainty)
+                #if save_pano_img:
                 #    img_list = glob.glob("{}/{}/*.jpg".format(self.r, cam_id))
                 #    print ("images are converting format...\n")
                 #    for img in img_list:
@@ -1057,13 +930,11 @@ class TkFileDialog(tk.Frame):
             # create run day folder in programme folder
             # check b_path_name
             if not len(b_path_name):
-                self.r_d = [re.findall('\d+', vf)[0]
-                            for vf in self.vdo_folders]
+                self.r_d = [re.findall('\d+', vf)[0] for vf in self.vdo_folders]
                 if len(self.r_d) > 1:
                     self.r_d_base = self.r_d[0]
-                    for r in range(1, len(self.r_d)):
-                        self.r_d_base = vdo.check.longestSubstringFinder(
-                            self.r_d_base, self.r_d[r])
+                    for r in range(1,len(self.r_d)):
+                        self.r_d_base = vdo.check.longestSubstringFinder(self.r_d_base, self.r_d[r])
                 else:
                     self.r_d_base = self.r_d[0]
                 if len(self.r_d_base):
@@ -1076,7 +947,7 @@ class TkFileDialog(tk.Frame):
 
             if not os.path.isdir(b_path_abs):
                 os.mkdir(b_path_abs)
-            # else:
+            #else:
             #    shutil.rmtree(b_path_abs, True)
             #    assert(os.path.isdir("b_path_abs") == False)
             #    os.mkdir(b_path_abs)
@@ -1089,46 +960,40 @@ class TkFileDialog(tk.Frame):
                 # get digits from vdo_folders and compare with generated folder
                 # (given the vdo name and folder name are different)
                 run_day = re.findall('\d+', vdo_f)[0]
-                # get folders in the current working directory
-                f_pwd = next(os.walk('./'))[1]
+                f_pwd = next(os.walk('./'))[1] # get folders in the current working directory
                 vdo_f = [f for f in f_pwd if run_day in f][0]
                 if (b_path_abs != os.path.abspath(os.getcwd())):
                     if vdo_f in next(os.walk(b_path_abs))[1]:
                         shutil.rmtree(os.path.join(b_path_abs, vdo_f))
                     shutil.move(vdo_f, b_path_abs)
-                # vdo exporting folders names
-                self.vdo_export_folders.append(vdo_f)
+                self.vdo_export_folders.append(vdo_f) # vdo exporting folders names
             current_pano_img_dir = b_path_abs
         else:
-            current_pano_img_dir = os.path.abspath(
-                "{}/{}/{}".format(current_folder_path, current_folder_name, self.r))
+            current_pano_img_dir = os.path.abspath("{}/{}/{}".format(current_folder_path, current_folder_name, self.r))
         if os.path.exists(current_pano_img_dir):
             if current_pano_img_dir != os.path.abspath(self.pano_save_dir.get()):
                 des_folder = os.path.abspath(self.pano_save_dir.get())
                 if not os.path.exists(des_folder):
                     os.makedirs(des_folder)
                 if not os.path.exists("{}/{}".format(des_folder, self.r)):
-                    # move folder to target directory
-                    shutil.move(current_pano_img_dir, des_folder)
+                    shutil.move(current_pano_img_dir, des_folder)# move folder to target directory
                 else:
                     # h5 path and moving path are not the same
                     if os.path.abspath(current_pano_img_dir) != os.path.abspath("{}/{}".format(des_folder, self.r)):
                         # overwrite
                         try:
-                            shutil.rmtree(os.path.abspath(
-                                "{}/{}".format(des_folder, self.r)))
+                            shutil.rmtree(os.path.abspath("{}/{}".format(des_folder, self.r)))
                         except IOError:
-                            print("Overwritten error occured!")
-                        shutil.move(os.path.abspath(
-                            current_pano_img_dir), os.path.abspath(des_folder))
+                            print ("Overwritten error occured!")
+                        shutil.move(os.path.abspath(current_pano_img_dir), os.path.abspath(des_folder))
                         #tmp = tpf.mkstemp(dir=os.path.dirname("{}/{}".format(des_folder, run)))
                         #shutil.move(os.path.abspath(current_h5_dir), tmp)
-                        # shutil.rmtree(tmp)
-                        print("Destination path already exists!\n"
-                              "Files are overwritten!")
+                        #shutil.rmtree(tmp)
+                        print ("Destination path already exists!\n" \
+                           "Files are overwritten!")
                     else:
-                        print("self-overwritten is not allowed!\n"
-                              "Files are saved in default (program) folder!")
+                        print ("self-overwritten is not allowed!\n" \
+                               "Files are saved in default (program) folder!")
         else:
             self.pb.stop()
             self.status_lb["text"] = "Pano image folder does not exists!"
@@ -1138,32 +1003,27 @@ class TkFileDialog(tk.Frame):
         return 0
 
     def show_progress_export_pano_img_dpc(self):
-        # import image (if img_export check box is checked) and the
-        # corresponding csv files
-        result = self.show_progress_export_pano_img(
-            self.pb_pano, self.status_pano)
+        # import image (if img_export check box is checked) and the corresponding csv files
+        result = self.show_progress_export_pano_img(self.pb_pano, self.status_pano)
         if result == 1:
             self.pb_pano.stop()
             return 1
         multi_folder = self.multi_folder.get()
-        # if multi_folder:
+        #if multi_folder:
         #    r_d = re.findall('\d+', self.vdo_folders[0])[0]
-        # else:
+        #else:
         #    r_d = re.findall('\d+', self.r)[0]
         self.pb_pano.start()
         if multi_folder:
-            b_path_path, b_path_name = os.path.split(
-                os.path.abspath(self.vdo_dir.get()))
+            b_path_path, b_path_name = os.path.split(os.path.abspath(self.vdo_dir.get()))
             if not len(b_path_name):
                 b_path_name = self.b_name
             run_folder = os.path.abspath(self.pano_save_dir.get())
             if not len(self.vdo_folders):
                 self.pb_pano.stop()
-                self.status_pano[
-                    "text"] = "No sub-folders found in the input folder!"
+                self.status_pano["text"] = "No sub-folders found in the input folder!"
                 return 1
-            run_folders = [run_folder + '\\' +
-                           v for v in self.vdo_export_folders]
+            run_folders = [run_folder + '\\' +  v for v in self.vdo_export_folders]
         else:
             run_folder = os.path.join(self.pano_save_dir.get(), self.r)
             run_folders = [run_folder]
@@ -1175,32 +1035,20 @@ class TkFileDialog(tk.Frame):
                 # new DPC folder structure
                 DPC_folder_CSV = os.path.join(run_path, "GDMimport_CSV")
                 DPC_folder_front = os.path.join(run_path, "FrontCam")
-                DPC_folder_front_run_l1 = os.path.join(
-                    DPC_folder_front, run_name)
-                DPC_folder_front_run = os.path.join(
-                    DPC_folder_front, run_name, run_name)
+                DPC_folder_front_run = os.path.join(DPC_folder_front, run_name)
                 if not self.deact_rear:
                     DPC_folder_rear = os.path.join(run_path, "RearCam")
-                    DPC_folder_rear_run_l1 = os.path.join(
-                        DPC_folder_rear, run_name)
-                    DPC_folder_rear_run = os.path.join(
-                        DPC_folder_rear, run_name, run_name)
+                    DPC_folder_rear_run = os.path.join(DPC_folder_rear, run_name)
                 vdo_dir = os.path.join(self.vdo_dir.get(), run_name)
             else:
                 ##DPC_folder = "{}/{}".format(run_folder, self.r)
                 run_path, run_name = os.path.split(run_folder)
                 DPC_folder_CSV = os.path.join(run_path, "GDMimport_CSV")
                 DPC_folder_front = os.path.join(run_path, "FrontCam")
-                DPC_folder_front_run_l1 = os.path.join(
-                    DPC_folder_front, self.r)
-                DPC_folder_front_run = os.path.join(
-                    DPC_folder_front, self.r, self.r)
+                DPC_folder_front_run = os.path.join(DPC_folder_front, self.r)
                 if not self.deact_rear:
                     DPC_folder_rear = os.path.join(run_path, "RearCam")
-                    DPC_folder_rear_run_l1 = os.path.join(
-                        DPC_folder_rear, self.r)
-                    DPC_folder_rear_run = os.path.join(
-                        DPC_folder_rear, self.r, self.r)
+                    DPC_folder_rear_run = os.path.join(DPC_folder_rear, self.r)
                 vdo_dir = os.path.join(self.vdo_dir.get())
             c50_folder = os.path.join(run_folder, "c50")
             c51_folder = os.path.join(run_folder, "c51")
@@ -1212,8 +1060,7 @@ class TkFileDialog(tk.Frame):
             try:
                 evnt = vdo.check.get_evnt(vdo_dir)
                 dmaSync = vdo.check.get_dmaSync(evnt)
-                Odo_Ext_inter = vdo.check.interp1d(
-                    dmaSync.Odometer, dmaSync.ExtCounter)
+                Odo_Ext_inter = vdo.check.interp1d(dmaSync.Odometer, dmaSync.ExtCounter)
                 Odo_Ext_extra = vdo.check.extrap1d(Odo_Ext_inter)
                 offset_evnt = vdo.check.get_evnt_offset(dmaSync)
             except ValueError:
@@ -1228,49 +1075,39 @@ class TkFileDialog(tk.Frame):
                     os.mkdir(DPC_folder_front)
                 if not os.path.exists(DPC_folder_CSV):
                     os.mkdir(DPC_folder_CSV)
-                if not os.path.exists(DPC_folder_front_run_l1):
-                    os.mkdir(DPC_folder_front_run_l1)
+                if not os.path.exists(DPC_folder_front_run):
                     os.mkdir(DPC_folder_front_run)
                 if not self.deact_rear:
                     if not os.path.exists(DPC_folder_rear):
                         os.mkdir(DPC_folder_rear)
                     if not os.path.exists(DPC_folder_CSV):
                         os.mkdir(DPC_folder_CSV)
-                    if not os.path.exists(DPC_folder_rear_run_l1):
-                        os.mkdir(DPC_folder_rear_run_l1)
+                    if not os.path.exists(DPC_folder_rear_run):
                         os.mkdir(DPC_folder_rear_run)
                 if os.path.isdir(c50_folder):
                     try:
-                        csv_files.append(
-                            glob.glob("{}/{}/*IntCntFrNum.csv".format(run_folder, "c50"))[0])
+                        csv_files.append(glob.glob("{}/{}/*IntCntFrNum.csv".format(run_folder, "c50"))[0])
                     except IndexError:
-                        csv_files.append(os.path.join(run_folder, 'c50', os.path.split(
-                            run_folder)[1] + '_c50_IntCntFrNum.csv'))
+                        csv_files.append(os.path.join(run_folder, 'c50', os.path.split(run_folder)[1] + '_c50_IntCntFrNum.csv'))
                 if os.path.isdir(c51_folder):
                     try:
-                        csv_files.append(
-                            glob.glob("{}/{}/*IntCntFrNum.csv".format(run_folder, "c51"))[0])
+                        csv_files.append(glob.glob("{}/{}/*IntCntFrNum.csv".format(run_folder, "c51"))[0])
                     except IndexError:
-                        csv_files.append(os.path.join(run_folder, 'c51', os.path.split(
-                            run_folder)[1] + '_c51_IntCntFrNum.csv'))
+                        csv_files.append(os.path.join(run_folder, 'c51', os.path.split(run_folder)[1] + '_c51_IntCntFrNum.csv'))
             for i, csv in enumerate(csv_files):
                 pano_extcnt_info = pd.DataFrame()
-                pano_info = pd.read_csv(
-                    csv, names=['Odometer:', 'FrameNum:'], skiprows=2, delimiter=",")
+                pano_info = pd.read_csv(csv, names = ['Odometer:', 'FrameNum:'], skiprows = 2, delimiter=",")
                 if (len(pano_info.index) == 0):
                     pano_extcnt_info['IntCnt'] = []
                     pano_extcnt_info['IntCnt_Sync'] = []
                     pano_extcnt_info['ExtCnt'] = []
                     pano_extcnt_info['Frame_No.'] = []
                 else:
-                    IntCnt_sync = pano_info[
-                        'Odometer:'] / self.factor + offset_evnt
-                    # external counter of pano images
-                    pano_ext = Odo_Ext_extra(pano_info['Odometer:'])
+                    IntCnt_sync = pano_info['Odometer:'] / self.factor + offset_evnt
+                    pano_ext = Odo_Ext_extra(pano_info['Odometer:']) # external counter of pano images
                     pano_extcnt_info['IntCnt'] = pano_info['Odometer:']
                     pano_extcnt_info['IntCnt_Sync'] = IntCnt_sync.astype('int')
-                    pano_extcnt_info['ExtCnt'] = pd.Series(
-                        pano_ext).astype('int')
+                    pano_extcnt_info['ExtCnt'] = pd.Series(pano_ext).astype('int')
                     pano_extcnt_info['Frame_No.'] = pano_info['FrameNum:']
                 csv_dataframe[i] = pano_extcnt_info
                 csv_bname = os.path.basename(csv)
@@ -1295,13 +1132,10 @@ class TkFileDialog(tk.Frame):
                 if cam_id == "c50":
                     #new_csv_name = "{}/{}.csv".format(DPC_folder_front_run, "Prorail{}si12_DMAImage_Cam1".format(r_d))
                     if ('[' or ']') in DPC_folder_front_run:
-                        DPC_folder_front_run_temp = self.escape(
-                            DPC_folder_front_run)
-                        jpegs = glob.glob(
-                            "{}/*.jpg".format(DPC_folder_front_run_temp))
+                        DPC_folder_front_run_temp = self.escape(DPC_folder_front_run)
+                        jpegs = glob.glob("{}/*.jpg".format(DPC_folder_front_run_temp))
                     else:
-                        jpegs = glob.glob(
-                            "{}/*.jpg".format(DPC_folder_front_run))
+                        jpegs = glob.glob("{}/*.jpg".format(DPC_folder_front_run))
                     for f in jpegs:
                         os.remove(f)
                     for pic in pics:
@@ -1309,13 +1143,10 @@ class TkFileDialog(tk.Frame):
                 elif cam_id == "c51":
                     #new_csv_name = "{}/{}.csv".format(DPC_folder_rear_run, "Prorail{}si12_DMAImage_Cam2".format(r_d))
                     if ('[' or ']') in DPC_folder_rear_run:
-                        DPC_folder_rear_run_temp = self.escape(
-                            DPC_folder_rear_run)
-                        jpegs = glob.glob(
-                            "{}/*.jpg".format(DPC_folder_rear_run_temp))
+                        DPC_folder_rear_run_temp = self.escape(DPC_folder_rear_run)
+                        jpegs = glob.glob("{}/*.jpg".format(DPC_folder_rear_run_temp))
                     else:
-                        jpegs = glob.glob(
-                            "{}/*.jpg".format(DPC_folder_rear_run))
+                        jpegs = glob.glob("{}/*.jpg".format(DPC_folder_rear_run))
                     for f in jpegs:
                         os.remove(f)
                     for pic in pics:
@@ -1326,8 +1157,7 @@ class TkFileDialog(tk.Frame):
             else:
                 merge_dataframe = csv_dataframe[0]
                 merge = merge_dataframe.sort_values(by=['IntCnt'])
-            new_csv_name = "{}/{}.csv".format(DPC_folder_CSV,
-                                              "Prorail{}si12_DMAImage".format(r_d))
+            new_csv_name = "{}/{}.csv".format(DPC_folder_CSV, "Prorail{}si12_DMAImage".format(r_d))
             merge.to_csv(new_csv_name, sep=';', index=False)
             # delete run folders
             if os.path.isdir(run_folder):
@@ -1368,10 +1198,10 @@ class TkFileDialog(tk.Frame):
         shutil.copy(fn_lbd, h5_path)
 
         # resolution analyse
-        options = Options()  # fake options
+        options = Options() # fake options
         if options.debug and not options.use_cams:
             options.use_cams = ['60']
-        # TODO: handle this also in get_args?
+        ## TODO: handle this also in get_args?
         if options.use_cams is None:
             # use all
             if options.debug:
@@ -1383,15 +1213,14 @@ class TkFileDialog(tk.Frame):
             # empty list -> use_cams
             options.save = options.use_cams
 
-        # TODO: switch automatic between py2exe app and python script app
+        #TODO: switch automatic between py2exe app and python script app
         # Use this only for py2exe application --Shulin
         elif options.save is None:
             options.save = options.use_cams
 
         speed_max = 40
-        select_range = {'subrange_selected': False}
-        vdo.check.analyseVdo(folder=h5_path, run=None, options=options,
-                             speed_max=speed_max, select_range=select_range)
+        select_range = {'subrange_selected' : False}
+        vdo.check.analyseVdo(folder=h5_path, run=None, options=options, speed_max=speed_max, select_range=select_range)
         self.pb["value"] = 100
         self.status_lb["text"] = "Done!"
         self.pb.stop()
@@ -1401,7 +1230,7 @@ class TkFileDialog(tk.Frame):
         res = self.show_progress_export_pano_img(self.pb_GPS, self.status_GPS)
         if res == 1:
             self.pb_GPS.stop()
-            return 1
+            return  1
         # debug
         self.pano_cam_ids = ['c50']
         self.pb_GPS.start()
@@ -1415,20 +1244,16 @@ class TkFileDialog(tk.Frame):
         # get seg, poi file
         if multi_folder:
             # find all seg, poi files in the seg_path, poi_path
-            seg_strs, poi_strs = [os.path.join(seg_path, '*{}*seg.csv'.format(v)) for v in self.vdo_folders], [
-                os.path.join(poi_path, '*{}*poi.csv'.format(v)) for v in self.vdo_folders]
-            seg_file, poi_file = np.atleast_1d(np.squeeze([glob.glob(seg_str) for seg_str in seg_strs])), np.atleast_1d(
-                np.squeeze([glob.glob(poi_str) for poi_str in poi_strs]))
+            seg_strs, poi_strs = [os.path.join(seg_path, '*{}*seg.csv'.format(v)) for v in self.vdo_folders], [os.path.join(poi_path, '*{}*poi.csv'.format(v)) for v in self.vdo_folders]
+            seg_file, poi_file = np.atleast_1d(np.squeeze([glob.glob(seg_str) for seg_str in seg_strs])), np.atleast_1d(np.squeeze([glob.glob(poi_str) for poi_str in poi_strs]))
         else:
-            seg_strs, poi_strs = os.path.join(
-                seg_path, '*{}*seg.csv'.format(self.r)), os.path.join(seg_path, '*{}*poi.csv'.format(self.r))
+            seg_strs, poi_strs = os.path.join(seg_path, '*{}*seg.csv'.format(self.r)), os.path.join(seg_path, '*{}*poi.csv'.format(self.r))
             seg_file, poi_file = glob.glob(seg_strs), glob.glob(poi_strs)
         if multi_folder:
             # get vdo folders
             for j, vdo_folder in enumerate(self.vdo_folders):
-                # get path for each measure run folder (in order to read event
-                # file)
-                vdo_p = os.path.join(vdo_path, vdo_folder)  # vdo_path
+                # get path for each measure run folder (in order to read event file)
+                vdo_p = os.path.join(vdo_path, vdo_folder) # vdo_path
                 # get vdo base path and vdo base folder
                 vdo_bp, vdo_bf = os.path.split(vdo_path)
                 if not len(vdo_bf):
@@ -1439,21 +1264,18 @@ class TkFileDialog(tk.Frame):
                 seg_f = [seg for seg in seg_file if vdo_folder in seg]
                 poi_f = [poi for poi in poi_file if vdo_folder in poi]
                 if not len(seg_f):
-                    self.status_GPS[
-                        "text"] = "No seg file for {}".format(vdo_folder)
+                    self.status_GPS["text"] = "No seg file for {}".format(vdo_folder)
                     self.pb_GPS.stop()
                     return 1
                 if not len(poi_f):
-                    self.status_GPS[
-                        "text"] = "No poi file for {}".format(vdo_folder)
+                    self.status_GPS["text"] = "No poi file for {}".format(vdo_folder)
                     self.pb_GPS.stop()
                     return 1
                 for i, cam_id in enumerate(self.pano_cam_ids):
-                    vdo.check.save_GPS_coord(vdo_folder, poi_f[0], seg_f[
-                                             0], cam_id, vdo_p, self.factor, self.pano_ante_dist, save_path=save_p)
+                    vdo.check.save_GPS_coord(vdo_folder, poi_f[0], seg_f[0], cam_id, vdo_p, self.factor, self.pano_ante_dist, save_path=save_p)
                 self.pb_GPS.update()
                 self.pb_GPS["value"] = (j + 1) * 100 / len(self.vdo_folders)
-        else:  # measure run is selected
+        else: # measure run is selected
             if not len(seg_file):
                 self.status_GPS["text"] = "No Seg file found!"
                 return 1
@@ -1462,24 +1284,23 @@ class TkFileDialog(tk.Frame):
                 return 1
             for i, cam_id in enumerate(self.pano_cam_ids):
                 self.pb_GPS.update()
-                vdo.check.save_GPS_coord(self.r, poi_file[0], seg_file[
-                                         0], cam_id, vdo_path, self.factor, self.pano_ante_dist, save_path=self.pano_save_dir.get())
+                vdo.check.save_GPS_coord(self.r, poi_file[0], seg_file[0], cam_id, vdo_path, self.factor, self.pano_ante_dist, save_path=self.pano_save_dir.get())
                 self.pb_GPS["value"] = (i + 1) * 100 / len(self.pano_cam_ids)
         self.status_GPS["text"] = "Done!"
         self.pb_GPS.stop()
         return 0
 
+
     def escape(self, s):
         r = re.compile("(%s)" % "|".join(re.escape(c) for c in "*?["))
         return r.sub(r"[\1]", s)
 
-
-class CamSlectionDialog(tk.Frame):
+class  CamSlectionDialog(tk.Frame):
 
     def __init__(self, root):
 
         tk.Frame.__init__(self, root)
-        label_1 = tk.Label(root, text="file path")
+        label_1 = tk.Label(root, text = "file path")
         entry_1 = tk.Entry(root)
-        label_1.grid(row=0)
-        entry_1.grid(row=0, column=1)
+        label_1.grid(row = 0)
+        entry_1.grid(row = 0, column = 1)

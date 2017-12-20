@@ -78,7 +78,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "About", None))
-        self.label.setText(_translate("Dialog", "Version: 1.0.0.2", None))
+        self.label.setText(_translate("Dialog", "Version: 1.0.0.3", None))
         self.label_2.setText(_translate("Dialog", "Copyright © 2016-2017 ", None))
         self.close_btn.setText(_translate("Dialog", "Close", None))
 

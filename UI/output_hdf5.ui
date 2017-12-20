@@ -123,24 +123,24 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBox_60">
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="checkBox_61">
           <property name="text">
-           <string>60</string>
+           <string>61</string>
           </property>
          </widget>
         </item>
         <item row="1" column="4">
-         <widget class="QCheckBox" name="checkBox_65">
-          <property name="text">
-           <string>65</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
          <widget class="QCheckBox" name="checkBox_64">
           <property name="text">
            <string>64</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QCheckBox" name="checkBox_65">
+          <property name="text">
+           <string>65</string>
           </property>
          </widget>
         </item>
@@ -151,10 +151,17 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="checkBox_61">
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="checkBox_60">
           <property name="text">
-           <string>61</string>
+           <string>60</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="checkBox_62">
+          <property name="text">
+           <string>62</string>
           </property>
          </widget>
         </item>
@@ -170,6 +177,13 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
+        <item row="1" column="4">
+         <widget class="QCheckBox" name="checkBox_74">
+          <property name="text">
+           <string>74</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QCheckBox" name="checkBox_70">
           <property name="text">
@@ -177,17 +191,17 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="4">
-         <widget class="QCheckBox" name="checkBox_75">
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="checkBox_71">
           <property name="text">
-           <string>75</string>
+           <string>71</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="3">
-         <widget class="QCheckBox" name="checkBox_74">
+        <item row="1" column="5">
+         <widget class="QCheckBox" name="checkBox_75">
           <property name="text">
-           <string>74</string>
+           <string>75</string>
           </property>
          </widget>
         </item>
@@ -198,10 +212,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="checkBox_71">
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="checkBox_72">
           <property name="text">
-           <string>71</string>
+           <string>72</string>
           </property>
          </widget>
         </item>
@@ -229,6 +243,13 @@
       <widget class="QPushButton" name="out_h5_btn">
        <property name="text">
         <string>Output HDF5</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="stop_btn">
+       <property name="text">
+        <string>Stop</string>
        </property>
       </widget>
      </item>

@@ -82,5 +82,5 @@ class Ui_Dialog(object):
         self.h5_browse_btn.setText(_translate("Dialog", "Browse...", None))
         self.label_2.setText(_translate("Dialog", "HDF5 Path:", None))
         self.lockbox_browse_btn.setText(_translate("Dialog", "Browse...", None))
-        self.label_3.setText(_translate("Dialog", "LockBox Path:", None))
+        self.label_3.setText(_translate("Dialog", "LocBox Path:", None))
 

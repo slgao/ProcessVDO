@@ -102,15 +102,15 @@ class WThreadFH5Window(QtCore.QThread):
         # 'select_dist' : 50*1000} #15092918
 
         # this will introduce QPixmap error
-        vdo.check.analyseVdo(folder=self.h5_path, run=None, options=options,
-                             speed_max=speed_max, select_range=select_range)
+        self.emit(QtCore.SIGNAL("analyseVDO"), self.h5_path, None, 8.0, speed_max, select_range,
+                  options, None, None, True, True)
+        #vdo.check.analyseVdo(folder=self.h5_path, run=None, options=options,
+        #                    speed_max=speed_max, select_range=select_range)
 
         # update the prgressbar
         # import time
         # time.sleep(10)
         self.emit(QtCore.SIGNAL("show_info"), "Done!")
-
-        return
 
     def terminate(self):
         # TODO: need to use it right
@@ -138,7 +138,7 @@ class FH5Window(DialogWindow):
 
     def reset_dialog_window(self):
         self.ui.out_graph_btn.setEnabled(True)
-        self.ui.cancel_btn.setEnabled(False)
+        self.ui.cancel_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
         self.ui.progressBar.setValue(0)
 
@@ -163,6 +163,7 @@ class FH5Window(DialogWindow):
             "show_warning"), self.show_warning)
         self.connect(self.get_thread, QtCore.SIGNAL(
             "reset_dialog_window"), self.reset_dialog_window)
+        self.connect(self.get_thread, QtCore.SIGNAL("analyseVDO"), vdo.check.analyseVdo)
         # initialize progressBar
         self.get_thread.start()
         self.ui.out_graph_btn.setEnabled(False)

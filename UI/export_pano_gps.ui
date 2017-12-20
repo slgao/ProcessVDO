@@ -47,12 +47,12 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Img Save Path:</string>
+        <string>Seg file Path:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QLineEdit" name="img_save_path"/>
+      <widget class="QLineEdit" name="seg_path"/>
      </item>
      <item row="0" column="2">
       <widget class="QLineEdit" name="vdo_path"/>
@@ -114,6 +114,13 @@
        </property>
        <property name="text">
         <string>Output GPS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="stop_btn">
+       <property name="text">
+        <string>Stop</string>
        </property>
       </widget>
      </item>
@@ -208,7 +215,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QCheckBox" name="checkBox_multifolder">
+        <widget class="QCheckBox" name="checkBox_multi_folder">
          <property name="text">
           <string>multi_folder(run_day)</string>
          </property>

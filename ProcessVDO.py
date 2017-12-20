@@ -7,16 +7,18 @@ import re
 import time
 import shutil
 import matplotlib.pyplot as plt
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
+import warnings
+warnings.filterwarnings("ignore")
 
 # import third party modules
 import py_gui.main_window as mw
-import py_gui.export_pano_img as expimg
-import py_gui.export_pano_gps as expgps
 import py_gui.about_dialog as aboutd
-from win_proc.dialog_window import DialogWindow
 from win_proc.res_analyse_window import ResAnalyseWindow
 from win_proc.out_hdf5_window import OutHdf5Window
+from win_proc.run_info_window import RunInfoWindow
+from win_proc.exp_pano_img_window import ExpPanoImgWindow
+from win_proc.exp_pano_gps_window import ExpPanoGPSWindow
 
 if sys.version_info.major < 3:
     import Tkinter as tk
@@ -26,7 +28,6 @@ import gui
 from cli import get_args
 import vdo
 import vdo.VideoRead.VideoRead as VR
-#import pstats
 ###################
 import ipdb
 __author__ = 'gao.shulin'
@@ -74,43 +75,6 @@ img_type = {
     515: bw_linear
 }
 
-
-class ExpPanoImgWindow(DialogWindow):
-
-    def __init__(self, parent=None):
-        super(ExpPanoImgWindow, self).__init__(parent)
-        self.ui = expimg.Ui_Dialog()
-        self.ui.setupUi(self)
-        self.set_connections()
-
-    def set_connections(self):
-        self.ui.vdo_browse_btn.clicked.connect(
-            lambda: self.set_path(self.ui.vdo_path))
-        self.ui.img_save_browse_btn.clicked.connect(
-            lambda: self.set_path(self.ui.img_save_path))
-        # TODO: add more button set_connections
-
-
-class ExpPanoGPSWindow(DialogWindow):
-
-    def __init__(self, parent=None):
-        super(ExpPanoGPSWindow, self).__init__(parent)
-        self.ui = expgps.Ui_Dialog()
-        self.ui.setupUi(self)
-        self.set_connections()
-
-    def set_connections(self):
-        self.ui.vdo_browse_btn.clicked.connect(
-            lambda: self.set_path(self.ui.vdo_path))
-        self.ui.img_save_browse_btn.clicked.connect(
-            lambda: self.set_path(self.ui.img_save_path))
-        self.ui.poi_browse_btn.clicked.connect(
-            lambda: self.set_path(self.ui.poi_path))
-        self.ui.gps_save_browse_btn.clicked.connect(
-            lambda: self.set_path(self.ui.gps_path))
-        # TODO: add more button set_connections
-
-
 class AboutDialog(QtGui.QDialog):
 
     def __init__(self, parent=None):
@@ -135,6 +99,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.pano_img_btn.clicked.connect(self.pano_img_btn_clicked)
         self.ui.pano_gps_btn.clicked.connect(self.pano_gps_btn_clicked)
         self.ui.actionAbout.triggered.connect(self.actionAbout_triggered)
+        self.ui.run_info_btn.clicked.connect(self.run_info_btn_clicked)
 
     def res_btn_clicked(self):
         res_analyse_window = ResAnalyseWindow()
@@ -171,9 +136,16 @@ class MainWindow(QtGui.QMainWindow):
         about_window.show()
         about_window.exec_()
 
+    def run_info_btn_clicked(self):
+        run_info_window = RunInfoWindow()
+        # make the background window freeze
+        run_info_window.setModal(True)
+        run_info_window.show()
+        run_info_window.exec_()
+
 if __name__ == "__main__":
-    use_tkinter_gui, use_pyqt_gui = False, True
-    ipdb.set_trace()
+    use_tkinter_gui = False
+    use_pyqt_gui = ~use_tkinter_gui
     if use_tkinter_gui:
         root = tk.Tk()
         file_dialog = gui.TkFileDialog(root)

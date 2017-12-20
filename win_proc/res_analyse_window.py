@@ -1,6 +1,8 @@
 import py_gui.resolution_analyse as ra
-from win_proc.fh5_window import FH5Window
+# import win_proc.fromVDO_window as fvdo_win
 from win_proc.fromVDO_window import FromVDOWindow
+
+from win_proc.fh5_window import FH5Window
 from PyQt4 import QtGui
 
 

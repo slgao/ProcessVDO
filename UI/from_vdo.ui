@@ -60,7 +60,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>LockBox Path:</string>
+        <string>LocBox Path:</string>
        </property>
       </widget>
      </item>
@@ -140,27 +140,6 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBox_60">
-          <property name="text">
-           <string>60</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="QCheckBox" name="checkBox_65">
-          <property name="text">
-           <string>65</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QCheckBox" name="checkBox_64">
-          <property name="text">
-           <string>64</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QCheckBox" name="checkBox_cam_6">
           <property name="text">
@@ -172,6 +151,34 @@
          <widget class="QCheckBox" name="checkBox_61">
           <property name="text">
            <string>61</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="checkBox_60">
+          <property name="text">
+           <string>60</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QCheckBox" name="checkBox_65">
+          <property name="text">
+           <string>65</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QCheckBox" name="checkBox_64">
+          <property name="text">
+           <string>64</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="checkBox_62">
+          <property name="text">
+           <string>62</string>
           </property>
          </widget>
         </item>
@@ -194,17 +201,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="4">
+        <item row="1" column="5">
          <widget class="QCheckBox" name="checkBox_75">
           <property name="text">
            <string>75</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QCheckBox" name="checkBox_74">
-          <property name="text">
-           <string>74</string>
           </property>
          </widget>
         </item>
@@ -219,6 +219,20 @@
          <widget class="QCheckBox" name="checkBox_71">
           <property name="text">
            <string>71</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QCheckBox" name="checkBox_74">
+          <property name="text">
+           <string>74</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="checkBox_72">
+          <property name="text">
+           <string>72</string>
           </property>
          </widget>
         </item>
@@ -328,8 +342,8 @@
      <y>157</y>
     </hint>
     <hint type="destinationlabel">
-     <x>230</x>
-     <y>163</y>
+     <x>212</x>
+     <y>167</y>
     </hint>
    </hints>
   </connection>
@@ -392,8 +406,8 @@
      <y>199</y>
     </hint>
     <hint type="destinationlabel">
-     <x>240</x>
-     <y>205</y>
+     <x>212</x>
+     <y>207</y>
     </hint>
    </hints>
   </connection>
@@ -442,6 +456,38 @@
     <hint type="destinationlabel">
      <x>394</x>
      <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_cam_6</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_62</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>31</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_cam_7</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_72</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>37</x>
+     <y>198</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>244</x>
+     <y>198</y>
     </hint>
    </hints>
   </connection>
